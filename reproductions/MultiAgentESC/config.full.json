@@ -1,0 +1,39 @@
+{
+  "dataset": "data/ESConv.json",
+  "selection": "first",
+  "dialogue_limit": 100,
+  "seed": 42,
+  "provider": {
+    "base_url": "http://127.0.0.1:11434/v1",
+    "api_key_env": "OLLAMA_API_KEY",
+    "api_key_default": "ollama",
+    "timeout_seconds": 300,
+    "retries": 3
+  },
+  "models": {
+    "Qwen2.5-32b": "qwen2.5:32b",
+    "LLaMA3-70b": "llama3:70b"
+  },
+  "evaluation_backbone": "Qwen2.5-32b",
+  "judge": {
+    "base_url": "http://127.0.0.1:11434/v1",
+    "api_key_env": "OLLAMA_API_KEY",
+    "api_key_default": "ollama",
+    "model": "qwen2.5:32b",
+    "type": "local-llm-approximation",
+    "timeout_seconds": 300,
+    "retries": 3,
+    "parse_retries": 3
+  },
+  "generation": {
+    "temperature": 0.0,
+    "max_tokens": 400,
+    "response_word_limit": 30,
+    "self_consistency_samples": 5
+  },
+  "retrieval": {
+    "backend": "sbert",
+    "model": "all-roberta-large-v1",
+    "top_k": 10
+  }
+}

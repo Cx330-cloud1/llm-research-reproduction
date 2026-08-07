@@ -1,0 +1,5 @@
+variant,D-1,D-2,B-1,B-2,R-L,significant_metrics,source
+w/o dialogue analysis,6.70,33.98,17.55,5.28,14.38,,paper-reported
+w/o experience,6.50,33.31,17.64,5.32,14.54,,paper-reported
+w/o group discussion,6.57,34.44,17.50,5.31,14.58,,paper-reported
+MultiAgentESC (Ours),6.78,35.15,17.66,5.38,14.66,D-1;D-2;R-L,paper-reported

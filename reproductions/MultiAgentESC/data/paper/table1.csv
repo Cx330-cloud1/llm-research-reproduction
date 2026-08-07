@@ -1,0 +1,27 @@
+method,backbone,D-1,D-2,B-1,B-2,B-3,F1,R-L,source
+Zero-shot,LLaMA3-70b,6.65,31.25,17.52,5.22,2.17,18.11,14.45,paper-reported
+Few-shot,LLaMA3-70b,6.53,30.78,17.78,5.58,2.23,18.25,14.57,paper-reported
+Zero-shot CoT,LLaMA3-70b,5.06,21.12,17.28,4.73,1.63,17.75,13.78,paper-reported
+Few-shot CoT,LLaMA3-70b,5.01,21.60,16.66,4.64,1.77,16.18,12.71,paper-reported
+Self-consistency,LLaMA3-70b,5.43,24.11,15.64,4.07,1.54,15.49,12.25,paper-reported
+Self-Refine,LLaMA3-70b,6.37,32.62,14.97,4.69,2.14,17.11,13.35,paper-reported
+Mixed-Initiative,LLaMA3-70b,6.03,28.12,15.42,4.35,1.88,16.01,12.59,paper-reported
+ESCoT,LLaMA3-70b,5.08,21.54,16.63,4.93,2.03,17.43,13.84,paper-reported
+CogChain,LLaMA3-70b,4.92,20.89,15.02,4.06,1.59,16.31,12.97,paper-reported
+Cooper,LLaMA3-70b,5.38,31.29,17.18,5.13,2.11,17.54,13.99,paper-reported
+MAS(Chain),LLaMA3-70b,5.11,28.96,16.87,4.67,2.06,17.52,13.62,paper-reported
+MAS(Debate),LLaMA3-70b,5.43,32.15,17.05,5.33,2.21,17.68,14.07,paper-reported
+MultiAgentESC (Ours),LLaMA3-70b,6.84,33.88,17.83,5.56,2.41,18.60,14.69,paper-reported
+Zero-shot,Qwen2.5-32b,6.37,32.02,17.76,5.31,2.27,18.20,14.59,paper-reported
+Few-shot,Qwen2.5-32b,6.40,32.22,17.59,5.29,2.27,18.23,14.52,paper-reported
+Zero-shot CoT,Qwen2.5-32b,5.37,24.96,17.41,5.28,2.16,17.12,13.51,paper-reported
+Few-shot CoT,Qwen2.5-32b,5.17,25.91,16.43,4.68,1.97,16.67,12.92,paper-reported
+Self-consistency,Qwen2.5-32b,5.66,30.45,16.16,4.42,1.74,16.53,12.80,paper-reported
+Self-Refine,Qwen2.5-32b,6.13,33.46,16.24,5.08,2.15,17.96,14.31,paper-reported
+Mixed-Initiative,Qwen2.5-32b,6.15,30.39,15.26,4.10,1.61,15.11,11.94,paper-reported
+ESCoT,Qwen2.5-32b,6.58,34.48,15.32,4.53,1.98,16.18,13.02,paper-reported
+CogChain,Qwen2.5-32b,5.79,34.56,16.13,4.54,1.79,16.34,12.99,paper-reported
+Cooper,Qwen2.5-32b,5.71,33.41,16.22,4.89,1.86,16.55,13.34,paper-reported
+MAS(Chain),Qwen2.5-32b,5.07,29.71,16.59,4.97,2.17,17.26,13.78,paper-reported
+MAS(Debate),Qwen2.5-32b,5.42,34.14,16.95,5.15,2.16,17.48,13.94,paper-reported
+MultiAgentESC (Ours),Qwen2.5-32b,6.78,35.15,17.66,5.38,2.35,18.30,14.66,paper-reported

@@ -1,0 +1,20 @@
+component,table,status,implementation_source,claim
+Zero-shot,1,implemented,paper appendix prompt,prompt-aligned reproduction
+Few-shot,1,implemented,paper appendix prompt,prompt-aligned reproduction
+Zero-shot CoT,1,implemented,paper appendix prompt,prompt-aligned reproduction
+Few-shot CoT,1,implemented,paper appendix prompt,prompt-aligned reproduction
+Self-consistency,1,implemented,paper description,approximate reimplementation
+Self-Refine,1 and 2 and 3,implemented,paper description,approximate reimplementation
+Mixed-Initiative,1,implemented,paper description and cited-method concept,approximate reimplementation
+ESCoT,1,implemented,paper description and cited-method concept,approximate reimplementation
+CogChain,1,implemented,paper description and cited-method concept,approximate reimplementation
+Cooper,1,implemented,paper description and cited-method concept,approximate reimplementation
+MAS Chain,1,implemented,paper description,approximate reimplementation
+MAS Debate,1,implemented,paper description,approximate reimplementation
+MultiAgentESC,1 and 2 and 3 and 4,implemented,public repository aligned refactor,public-code-aligned reimplementation
+Human blind evaluation,2,implemented workflow,paper protocol,requires three human annotators
+LLM judge,3,implemented,local Qwen replacement,approximate reevaluation not GPT-4o reproduction
+Dialogue analysis ablation,4,implemented,paper description,approximate reimplementation
+Experience ablation,4,implemented,paper description,approximate reimplementation
+Group discussion ablation,4,implemented,paper description,approximate reimplementation
+Automatic metrics,1 and 4,implemented,transparent local formulas,proxy implementation

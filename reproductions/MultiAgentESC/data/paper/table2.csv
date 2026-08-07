@@ -1,0 +1,21 @@
+baseline,dimension,win,lose,tie,significant_marked,source
+Zero-shot,Fluency,48,22,30,yes,paper-reported
+Zero-shot,Identification,46,19,35,yes,paper-reported
+Zero-shot,Comforting,41,24,35,no,paper-reported
+Zero-shot,Suggestion,52,16,32,yes,paper-reported
+Zero-shot,Overall,49,21,30,no,paper-reported
+Few-shot CoT,Fluency,52,18,30,yes,paper-reported
+Few-shot CoT,Identification,55,13,32,yes,paper-reported
+Few-shot CoT,Comforting,48,21,31,no,paper-reported
+Few-shot CoT,Suggestion,54,18,28,yes,paper-reported
+Few-shot CoT,Overall,53,19,28,yes,paper-reported
+Self-consistency,Fluency,50,19,31,yes,paper-reported
+Self-consistency,Identification,53,15,32,yes,paper-reported
+Self-consistency,Comforting,49,20,31,yes,paper-reported
+Self-consistency,Suggestion,54,19,27,yes,paper-reported
+Self-consistency,Overall,52,18,30,yes,paper-reported
+Self-Refine,Fluency,44,19,37,yes,paper-reported
+Self-Refine,Identification,46,22,32,yes,paper-reported
+Self-Refine,Comforting,42,20,38,no,paper-reported
+Self-Refine,Suggestion,40,22,38,no,paper-reported
+Self-Refine,Overall,44,21,35,yes,paper-reported

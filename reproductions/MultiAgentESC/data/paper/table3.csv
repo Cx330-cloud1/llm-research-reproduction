@@ -1,0 +1,6 @@
+method,fluency,identification,comforting,suggestion,overall,source
+Zero-shot,4.702,3.323,4.132,3.115,3.823,paper-reported
+Few-shot CoT,4.614,3.109,4.068,2.738,3.764,paper-reported
+Self-consistency,4.602,3.258,3.875,2.727,3.685,paper-reported
+Self-Refine,4.715,3.427,3.972,3.104,3.792,paper-reported
+MultiAgentESC (Ours),4.786,3.729,4.323,3.462,4.028,paper-reported
