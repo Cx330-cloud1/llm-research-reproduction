@@ -7,9 +7,9 @@
 
 ---
 
-## Repository Overview
+# Research Areas
 
-当前主要关注方向：
+当前关注方向：
 
 - Large Language Model Agents
 - Multi-Agent Systems
@@ -24,13 +24,13 @@
 - 实验配置文件
 - 代码实现
 - 结果记录
-- 论文阅读笔记
+- 论文分析笔记
 - Research Ideas
 
 
 ---
 
-# Project Structure
+# Repository Structure
 
 ```
 llm-research-reproduction/
@@ -43,14 +43,16 @@ llm-research-reproduction/
 │   │   ├── experiments
 │   │   └── README.md
 │   │
-│   └── Future Projects
-│
+│   ├── EmoDynamiX/
+│   │   ├── reproduction notes
+│   │   ├── validation results
+│   │   └── README.md
 │
 ├── papers/
-│   └── Paper collection and references
+│   └── Literature collection
 │
 ├── notes/
-│   └── Literature reading notes
+│   └── Paper reading notes
 │
 └── experiments/
     └── Experimental records
@@ -64,6 +66,7 @@ llm-research-reproduction/
 | Project | Area | Status |
 | --- | --- | --- |
 | MultiAgentESC | Emotional Support Dialogue / Multi-Agent LLM | In Progress |
+| EmoDynamiX | Emotional Strategy Prediction / Emotional Dialogue | Completed Validation |
 
 
 ---
@@ -82,18 +85,85 @@ llm-research-reproduction/
 - Multi-Agent Collaboration
 
 
-主要工作：
+当前进展：
 
-- 搭建本地复现实验环境
-- 分析多智能体协作流程
-- 使用本地 LLM 进行生成实验
-- 复现论文主要实验流程
+已完成：
+
+- [x] 本地实验环境搭建
+- [x] ESConv 数据集加载
+- [x] MultiAgentESC 方法代码分析
+- [x] 本地 Qwen2.5-7B 接入
+- [x] Retrieval 模块运行
+- [x] MultiAgentESC 生成流程验证
+
+
+进行中：
+
+- [ ] Table 1 指标复现
+- [ ] Table 2 人工评价
+- [ ] Table 3 自动评价
+- [ ] Table 4 消融实验
+
+
+复现说明：
+
+由于论文原实验依赖大规模模型，本项目采用本地 LLM 进行资源友好的复现，重点验证方法流程与实验可运行性。
 
 
 详细信息：
 
 ```
 reproductions/MultiAgentESC
+```
+
+
+---
+
+## EmoDynamiX
+
+**EmoDynamiX: Emotional Support Dialogue Strategy Prediction by Modelling MiXed Emotions and Discourse Dynamics**
+
+方向：
+
+- Emotional Support Dialogue
+- Emotion Modeling
+- Dialogue Strategy Prediction
+
+
+当前进展：
+
+已完成：
+
+- [x] 官方代码环境分析
+- [x] 官方 checkpoint 配置验证
+- [x] Table 1 主实验复现验证
+- [x] 六项主要指标与论文结果核对
+- [x] Table 2 消融实验可复现性审计
+
+
+复现结果：
+
+- Table 1 官方 checkpoint 在本地环境完成推理
+- 主要指标与论文报告结果一致（四舍五入后完全匹配）
+
+
+Table 2 说明：
+
+论文中的消融实验需要对应训练配置与 checkpoint。
+
+由于官方仓库未提供完整消融 checkpoint，本项目完成：
+
+- 实验设置分析
+- 官方代码能力检查
+- 结果可复现性评估
+
+未虚构不存在的重训练结果。
+
+
+详细信息：
+
+```
+reproductions/EmoDynamiX
 ```
 
 
@@ -132,9 +202,10 @@ Result Analysis
 
 # Research Focus
 
-目前重点探索：
 
 ## LLM Agent
+
+关注：
 
 - Agent collaboration
 - Planning and reasoning
@@ -142,14 +213,18 @@ Result Analysis
 - Evaluation
 
 
-## Human-centered AI
+## Emotional Dialogue
 
-- Emotional support dialogue
-- Conversational intelligence
-- User modeling
+关注：
+
+- Emotional understanding
+- Support strategy prediction
+- Empathetic response generation
 
 
 ## Memory Systems
+
+关注：
 
 - Long-term memory
 - Memory retrieval
@@ -165,29 +240,32 @@ Result Analysis
 - Python
 - PyTorch
 - Ollama
-- Local LLM
 - HuggingFace Ecosystem
+- Local LLM Inference
 
 
-不同项目会维护独立配置文件。
+不同项目维护独立配置文件。
 
 
 ---
 
 # Notes
 
-本仓库中的实验结果根据个人计算资源进行调整。
+本仓库中的实验会根据个人计算资源进行调整。
 
 部分论文原始实验依赖：
 
 - 大规模闭源模型
 - 大规模 GPU 集群
+- 特定训练环境
 
-因此本仓库优先保证：
 
-- 方法流程可运行
-- 实验过程可复现
-- 结果差异可分析
+因此复现重点包括：
+
+- 方法流程验证
+- 实验环境重建
+- 结果差异分析
+- 可复现性评估
 
 
 而不是简单复制论文数字。
@@ -199,8 +277,8 @@ Result Analysis
 
 计划持续增加：
 
-- 更多 LLM Agent 论文复现
-- Memory Agent 相关研究
+- LLM Agent 论文复现
+- Memory Agent 研究
 - 情感计算与对话系统实验
 - Agent Evaluation 方法分析
 
@@ -213,4 +291,4 @@ Personal Research Reproduction Repository
 
 Focus:
 
-LLM · Agents · Human-centered AI
+**LLM · Agents · Human-centered AI**
