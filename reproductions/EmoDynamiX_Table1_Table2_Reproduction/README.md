@@ -86,14 +86,20 @@ roberta-hg-annomi-preprocessed-logs/result.json
 
 ## 重要的可复现性缺口
 
-1. 论文附录称 AnnoMI 训练 1,200 steps，但当前官方 `train_roberta_hg_annomi.sh` 使用 1,800 steps，发布的测试 checkpoint 也是 1,800；这两处不一致需要记录。
-2. ESConv 论文附录称训练 3,000 steps，训练脚本也设为 3,000，但发布的最佳测试 checkpoint 是 step 2,600。这可以理解为按验证集选择最佳 checkpoint，但 README 没有专门解释。
-3. Table 1 的完整表包含 LLaMA3-70B、ChatGPT、多个微调模型和专用 ESC 系统；官方仓库没有提供所有 baseline 的统一运行脚本与输出，因此本次不能声称完整重跑了整张表。
-4. Table 2 缺少三个消融变体的代码与全部四个变体的 checkpoint。仅凭论文描述自行改写，最多属于“近似再实现”，不能作为论文结果的严格复现。
+1. AnnoMI 训练步数存在差异：论文附录记录训练 1,200 steps，但官方 `train_roberta_hg_annomi.sh` 使用 1,800 steps，发布 checkpoint 也为 1,800 steps。该差异需要进一步确认。
 
-## 推荐的后续顺序
+2. ESConv 存在 checkpoint 选择差异：论文附录记录训练 3,000 steps，训练脚本也设置为 3,000 steps，但官方发布的测试 checkpoint 为 step 2,600。可能是根据验证集选择最佳 checkpoint，但 README 未进一步说明。
 
-1. 把本次 Table 1 结果作为“官方 checkpoint 推理复现”写入科研日志。
-2. 给作者发邮件索要 Table 2 的消融分支或 checkpoint。
-3. 若作者无法提供，再独立实现四个消融，并明确写成 `reimplementation`；每个设置至少运行 3 个随机种子，报告均值和标准差，不追求机械地对齐单次论文数值。
+3. Table 1 完整表包含 LLaMA3-70B、ChatGPT、多个微调模型以及其他 ESC 系统。由于官方仓库未提供所有 baseline 的统一运行脚本和输出，因此本次仅验证 EmoDynamiX 官方 checkpoint 的结果，未重新运行完整 Table 1。
+
+4. Table 2 部分消融实验资源未随官方仓库发布，包括部分消融实现与 checkpoint。仅依据论文描述重新实现的结果属于 `reimplementation`，不能作为论文结果的严格复现。
+
+
+## 后续计划
+
+1. 将本次 Table 1 结果作为官方 checkpoint 推理复现记录。
+
+2. 如条件允许，向作者请求 Table 2 消融实验相关代码或 checkpoint。
+
+3. 若无法获取资源，将根据论文描述独立实现消融版本，并明确标注为 `reimplementation`，同时进行多随机种子实验。
 
