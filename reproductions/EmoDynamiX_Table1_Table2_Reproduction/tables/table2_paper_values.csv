@@ -1,7 +1,0 @@
-model,esconv_macro_f1,esconv_weighted_f1,esconv_bias,annomi_macro_f1,annomi_weighted_f1,annomi_bias
-EmoDynamiX,27.70,32.71,0.45,27.92,35.33,0.50
-w/o Graph Learning,25.72,29.31,0.78,26.95,29.46,0.73
-w/o Mixed Emotion,25.90,29.45,0.66,24.71,30.25,0.70
-w/o Discourse Parser,26.64,30.12,0.59,27.04,31.59,0.60
-w/o Dummy Node,25.46,29.80,0.73,24.73,29.00,0.72
-

@@ -1,3 +1,0 @@
-dataset,test_samples,checkpoint,macro_f1_raw,macro_f1_percent,weighted_f1_raw,weighted_f1_percent,preference_bias,paper_macro_f1_percent,paper_weighted_f1_percent,paper_preference_bias,match_at_paper_precision
-ESConv,2895,checkpoint-2600.pth,0.2770401756470437,27.70401756470437,0.3270871435451419,32.70871435451419,0.4497110635806978,27.70,32.71,0.45,true
-AnnoMI,476,checkpoint-1800.pth,0.2791635571734473,27.91635571734473,0.3532810184179032,35.32810184179032,0.5003800257644303,27.92,35.33,0.50,true
