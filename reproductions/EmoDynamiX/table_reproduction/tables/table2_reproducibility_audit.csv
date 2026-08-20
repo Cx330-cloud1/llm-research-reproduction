@@ -1,0 +1,7 @@
+model,forward_implementation_released,training_script_released,checkpoint_released,reproduction_status,reason
+EmoDynamiX,yes,yes,yes,reproduced,Official checkpoints and test scripts are available.
+w/o Graph Learning,no,no,no,not_reproduced,Paper describes flattened tagged history but official ablation implementation is absent.
+w/o Mixed Emotion,partial,no,no,not_reproduced,erc_mixed switch exists but no separately trained ablation checkpoint or dedicated script is released.
+w/o Discourse Parser,no,no,no,not_reproduced,Sequential-edge ablation implementation and checkpoint are absent.
+w/o Dummy Node,no,no,no,not_reproduced,Mean-max pooling ablation implementation and checkpoint are absent.
+
