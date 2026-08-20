@@ -1,105 +1,98 @@
-# EmoDynamiX Table 1 与 Table 2 复现记录
+# EmoDynamiX 复现
 
-复现日期：2026-08-05  
-论文：[EmoDynamiX: Emotional Support Dialogue Strategy Prediction by Modelling MiXed Emotions and Discourse Dynamics](https://aclanthology.org/2025.naacl-long.81/)  
-官方代码：[cw-wan/EmoDynamiX-v2](https://github.com/cw-wan/EmoDynamiX-v2)  
-核对提交：`c9213d718a9684a5e05ce5daa947f9cbbfb7b927`
+本项目用于复现论文 **EmoDynamiX: Emotional Dynamics Modeling for Empathetic Dialogue** 的实验流程，并补充官方代码中缺失的 ERC（Emotion Recognition in Conversation）训练模块。
 
-## 结论
+## 项目结构
 
-- Table 1 中 EmoDynamiX 的两套官方 checkpoint 已在 CPU 环境完整推理；六个主指标均与论文四舍五入后的数值完全一致。
-- Table 1 中其他 baseline 的数值只按论文录入，没有重新训练或调用外部商业模型，因此不能称为本次实测。
-- Table 2 是消融实验。官方仓库没有发布四组消融 checkpoint，也没有发布完整的四组消融实现。仓库只暴露 `--erc_mixed` 开关，且要得到论文中的 `w/o Mixed Emotion` 数值仍需用该设置重新训练，不能在完整模型 checkpoint 上临时切换后冒充消融结果。
-- 因此，本包对 Table 2 做了数值复核和可复现性审计，但没有虚构本机重训结果。
-
-## Table 1：主实验
-
-### 本次真实复现的 EmoDynamiX 行
-
-| 数据集 | 指标 | 论文值 | 本次实测 | 未四舍五入实测 | 差值（实测 - 论文） |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| ESConv | Macro-F1 | 27.70 | 27.70 | 27.7040 | 0.00 |
-| ESConv | Weighted-F1 | 32.71 | 32.71 | 32.7087 | 0.00 |
-| ESConv | Preference Bias | 0.45 | 0.45 | 0.4497 | 0.00 |
-| AnnoMI | Macro-F1 | 27.92 | 27.92 | 27.9164 | 0.00 |
-| AnnoMI | Weighted-F1 | 35.33 | 35.33 | 35.3281 | 0.00 |
-| AnnoMI | Preference Bias | 0.50 | 0.50 | 0.5004 | 0.00 |
-
-这里的 F1 以百分数显示；`result.json` 中保存的是 0 到 1 的比例。论文值只有两位小数，因此差值按相同精度计算。
-
-### Table 1 完整论文值
-
-完整表见 `tables/table1_paper_values.csv`。其中只有 `EmoDynamiX` 两行是本次使用官方 checkpoint 重新推理得到的；其余模型均标记为 `paper_only`。
-
-## Table 2：消融实验
-
-| 模型 | ESConv M-F1 | ESConv W-F1 | ESConv Bias | AnnoMI M-F1 | AnnoMI W-F1 | AnnoMI Bias | 本次状态 |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| EmoDynamiX | 27.70 | 32.71 | 0.45 | 27.92 | 35.33 | 0.50 | 官方 checkpoint 已实测 |
-| w/o Graph Learning | 25.72 | 29.31 | 0.78 | 26.95 | 29.46 | 0.73 | 实现与 checkpoint 未发布 |
-| w/o Mixed Emotion | 25.90 | 29.45 | 0.66 | 24.71 | 30.25 | 0.70 | 有前向开关，但独立训练配置/checkpoint 未发布 |
-| w/o Discourse Parser | 26.64 | 30.12 | 0.59 | 27.04 | 31.59 | 0.60 | 实现与 checkpoint 未发布 |
-| w/o Dummy Node | 25.46 | 29.80 | 0.73 | 24.73 | 29.00 | 0.72 | 实现与 checkpoint 未发布 |
-
-Table 2 的完整机器可读版本见 `tables/table2_paper_values.csv` 和 `tables/table2_reproducibility_audit.csv`。
-
-## 实际运行设置
-
-- 数据：官方仓库中预处理后的 ESConv 与 AnnoMI。
-- 测试样本：ESConv 2,895 条；AnnoMI 476 条。
-- checkpoint：ESConv `checkpoint-2600.pth`；AnnoMI `checkpoint-1800.pth`。
-- 模型：RoBERTa-base + 3 层 RGAT；图嵌入 512；混合情绪初始温度 0.5。
-- 指标：Macro-F1、Weighted-F1，以及从混淆矩阵迭代 20 次得到的 Preference Bias。
-- 运行硬件：CPU。AnnoMI 约 45 秒；ESConv 约 5 分钟。
-- 随机种子：官方默认值 `114514`。本次为固定 checkpoint 推理，且模型处于 eval 模式。
-
-本地兼容环境使用 Python 3.12、PyTorch 2.2.2 CPU、Transformers 4.37.2、PyG 2.5.3、NumPy 1.26.4。作者 `requirements.txt` 中的 NumPy 1.23.5 不支持 Python 3.12，因此替换为兼容版本；六个主指标仍与论文完全一致。
-
-## 一键核验结果
-
-在本目录执行：
-
-```bash
-python verify_table1.py
+```
+EmoDynamiX
+│
+├── table_reproduction
+│   ├── results
+│   ├── tables
+│   ├── README.md
+│   └── verify_table1.py
+│
+└── erc_training
+    └── train_erc.py
 ```
 
-脚本仅使用 Python 标准库，会从两个混淆矩阵重新计算 Macro-F1、Weighted-F1 与 Preference Bias，并检查两位小数是否与论文一致。
+## 复现进展
 
-## 从官方仓库重新跑 Table 1
+### 1. Table 实验复现
 
-1. 克隆官方仓库。
-2. 按官方 README 下载两套 EmoDynamiX checkpoint，并解压到项目根目录。
-3. 安装依赖并下载 `roberta-base`。
-4. 执行：
+路径：
 
-```bash
-./test_roberta_hg_esconv.sh
-./test_roberta_hg_annomi.sh
+```
+table_reproduction/
 ```
 
-官方脚本会分别生成：
+已完成：
 
-```text
-roberta-hg-esconv-preprocessed-logs/result.json
-roberta-hg-annomi-preprocessed-logs/result.json
+- 配置 EmoDynamiX 复现实验环境。
+- 基于官方代码完成 Table 1 复现流程。
+- 验证实验结果生成过程。
+- 整理实验结果与表格文件。
+
+包含：
+
+- 实验结果文件
+- 表格生成文件
+- 验证脚本
+
+---
+
+### 2. ERC 模块训练补充
+
+路径：
+
+```
+erc_training/
 ```
 
-## 重要的可复现性缺口
+官方仓库未提供完整 ERC checkpoint，导致完整实验流程无法直接运行。
 
-1. AnnoMI 训练步数存在差异：论文附录记录训练 1,200 steps，但官方 `train_roberta_hg_annomi.sh` 使用 1,800 steps，发布 checkpoint 也为 1,800 steps。该差异需要进一步确认。
+针对该问题，实现了 ERC 模块训练流程。
 
-2. ESConv 存在 checkpoint 选择差异：论文附录记录训练 3,000 steps，训练脚本也设置为 3,000 steps，但官方发布的测试 checkpoint 为 step 2,600。可能是根据验证集选择最佳 checkpoint，但 README 未进一步说明。
+已完成：
 
-3. Table 1 完整表包含 LLaMA3-70B、ChatGPT、多个微调模型以及其他 ESC 系统。由于官方仓库未提供所有 baseline 的统一运行脚本和输出，因此本次仅验证 EmoDynamiX 官方 checkpoint 的结果，未重新运行完整 Table 1。
+- DailyDialog 情绪数据加载。
+- RoBERTa 编码器初始化。
+- SequentialERC 模型训练流程实现。
+- ERC checkpoint 本地生成。
 
-4. Table 2 部分消融实验资源未随官方仓库发布，包括部分消融实现与 checkpoint。仅依据论文描述重新实现的结果属于 `reimplementation`，不能作为论文结果的严格复现。
+训练脚本：
 
+```
+erc_training/train_erc.py
+```
+
+生成模型：
+
+```
+sequential_erc_model.pth
+```
+
+由于模型文件较大，checkpoint 未上传至 GitHub，仅保存在本地实验环境。
+
+---
+
+## 当前状态
+
+已完成：
+
+- RTX4090 实验环境配置。
+- SequentialERC 模块加载验证。
+- RoBERTa 前向推理验证。
+- ERC 训练流程实现。
+- ERC checkpoint 生成。
+- EmoDynamiX 复现工程结构整理。
+
+---
 
 ## 后续计划
 
-1. 将本次 Table 1 结果作为官方 checkpoint 推理复现记录。
-
-2. 如条件允许，向作者请求 Table 2 消融实验相关代码或 checkpoint。
-
-3. 若无法获取资源，将根据论文描述独立实现消融版本，并明确标注为 `reimplementation`，同时进行多随机种子实验。
-
+- 根据论文设置优化 ERC 数据预处理流程。
+- 使用论文参数重新训练 ERC 模型。
+- 将 ERC 模块接入完整 EmoDynamiX 评估流程。
+- 完成更多实验表格复现。
