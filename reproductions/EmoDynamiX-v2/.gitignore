@@ -1,0 +1,53 @@
+# checkpoints
+*.pth
+*.pt
+*.bin
+
+# model checkpoints
+*-checkpoints/
+checkpoints/
+stac_checkpoints/
+
+# pretrained weights
+pre_trained_models/*.pth
+pre_trained_models/**/*.bin
+
+# cache
+__pycache__/
+*.pyc
+
+# logs
+*.log
+
+# huggingface cache
+.cache/
+
+# experiment cache
+*.pkl
+
+# training logs
+*-logs/
+logs/
+
+# backups
+*_backup.py
+*_backup2.py
+
+# checkpoints
+*.pth
+*.pt
+*.bin
+*-checkpoints/
+
+# datasets
+data/**/*.csv
+data/**/*.json
+data/**/*.pkl
+
+# sddp datasets
+structured_dialogue_discourse_parsing/data/**/*.json
+structured_dialogue_discourse_parsing/data/**/*.txt
+
+# notebooks
+.ipynb_checkpoints/
+

@@ -1,0 +1,9 @@
+ESConv w/o Mixed Emotion
+
+checkpoint: 3000
+
+accuracy: 0.2998
+macro_f1: 0.2634
+micro_f1: 0.2998
+weighted_f1: 0.3074
+preference_bias: 0.4886

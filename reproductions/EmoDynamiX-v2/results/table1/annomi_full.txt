@@ -1,0 +1,9 @@
+ANNOYI Full Model
+
+checkpoint: 1350
+
+accuracy: 0.3403
+macro_f1: 0.2664
+micro_f1: 0.3403
+weighted_f1: 0.3387
+preference_bias: 0.5134

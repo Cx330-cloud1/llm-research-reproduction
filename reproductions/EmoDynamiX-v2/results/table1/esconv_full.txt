@@ -1,0 +1,9 @@
+ESConv Full Model
+
+checkpoint: 3000
+
+accuracy: 0.3050
+macro_f1: 0.2663
+micro_f1: 0.3050
+weighted_f1: 0.3112
+preference_bias: 0.4352
