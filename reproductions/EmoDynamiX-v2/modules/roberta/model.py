@@ -116,7 +116,16 @@ class RobertaHeterogeneousGraph(RobertaBase):
 
         # Classification head
         self.num_classes = len(self.strategy2id) - 1 if args.exclude_others else len(self.strategy2id)
-        self.classifier = RobertaClassificationHead(self.roberta_config.hidden_size + graph_dim, self.num_classes)
+        if args.ablation == "no_graph":
+            classifier_input_dim = self.roberta_config.hidden_size
+        else:
+            graph_readout_dim = graph_dim * 2 if args.ablation == "no_dummy" else graph_dim
+            classifier_input_dim = self.roberta_config.hidden_size + graph_readout_dim
+
+        self.classifier = RobertaClassificationHead(
+            classifier_input_dim,
+            self.num_classes
+        )
         # self.classifier = RobertaClassificationHead(graph_dim, self.num_classes)
         # self.classifier = RobertaClassificationHead(self.roberta_config.hidden_size, self.num_classes)
 
@@ -156,7 +165,6 @@ class RobertaHeterogeneousGraph(RobertaBase):
             texts_for_erc.append(text_for_erc)
             dialogues_for_parsing.append(dialogue_for_parsing)
             flattened_contexts.append(context)
-        context_embeddings = self.encode(flattened_contexts)
         # Discourse dependency parsing
         if self.lightmode:
             parsed_dialogues = samples["parsed_dialogue"]
@@ -175,6 +183,58 @@ class RobertaHeterogeneousGraph(RobertaBase):
         else:
             erc_tags = torch.argmax(erc_logits, dim=-1)
             erc_embeddings = self.erc_prototypes[erc_tags, :]
+
+        # Ablation: w/o Graph Learning.
+        # Keep emotion and historical strategy information, but insert
+        # them directly as tags into the flattened dialogue context.
+        if self.args.ablation == "no_graph":
+            tagged_contexts = []
+
+            for i in range(len(samples["dialogue_history"])):
+                utterances = samples["dialogue_history"][i].split("</s>")
+                speakers = str(samples["speaker_turn"][i]).split(" ")
+                strategy_history = [
+                    int(s.strip())
+                    for s in samples["strategy_history"][i][1:-1].split(",")
+                ]
+
+                turns = []
+                offset = sum(dialogue_sizes[:i])
+
+                for j in range(len(utterances)):
+                    if speakers[j] == "seeker":
+                        emotion_id = torch.argmax(
+                            erc_logits[offset + j], dim=-1
+                        ).item()
+                        emotion = self.id2emotion[emotion_id]
+
+                        turns.append(
+                            f"[{speakers[j]}] [emotion={emotion}] {utterances[j]}"
+                        )
+                    else:
+                        strategy_id = strategy_history[j]
+                        strategy_id = strategy_id if strategy_id != -1 else 0
+                        strategy = self.id2strategy[strategy_id]
+
+                        turns.append(
+                            f"[{speakers[j]}] [strategy={strategy}] {utterances[j]}"
+                        )
+
+                tagged_contexts.append(" ".join(turns))
+
+            context_embeddings = self.encode(tagged_contexts)
+            logits = self.classifier(context_embeddings)
+
+            return {
+                "logits": logits,
+                "graphs": [],
+                "attention_weights": [],
+                "erc_logits": erc_logits,
+            }
+
+        # Normal graph-based variants
+        context_embeddings = self.encode(flattened_contexts)
+
         # Build heterogeneous graph
         graphs = []
         graph_inputs = {
@@ -193,7 +253,8 @@ class RobertaHeterogeneousGraph(RobertaBase):
             for j, sid in strategy_indices[i]:
                 nodes[j + 1] = self.id2strategy[sid]
             node_embeddings = torch.zeros((len(nodes), self.args.hg_dim)).to(self.device)
-            node_embeddings[0, :] = node_embeddings[0, :] + self.dummy_embedding
+            if self.args.ablation != "no_dummy":
+                node_embeddings[0, :] = node_embeddings[0, :] + self.dummy_embedding
             erc_indices_1 = np.array(erc_indices[i]) + 1
             erc_indices_2 = np.array(erc_indices[i]) + sum(dialogue_sizes[:i])
             node_embeddings[erc_indices_1, :] = node_embeddings[erc_indices_1, :] + erc_embeddings[erc_indices_2, :]
@@ -203,16 +264,24 @@ class RobertaHeterogeneousGraph(RobertaBase):
             # node_embeddings = node_embeddings + pos_embeddings
             edges = []
             edge_types = []
-            for head, tail, tp in parsed_dialogues[i]:
-                if head != 0:
-                    edges.append([head, tail])
-                    edge_types.append(tp)
-            for j in range(1, len(nodes)):
-                edges.append([j, 0])
-                if j - 1 in erc_indices[i]:
-                    edge_types.append(self.graph_relation_dict["Inter"])
-                else:
-                    edge_types.append(self.graph_relation_dict["Self"])
+            if self.args.ablation == "no_discourse":
+                # Ablation: remove discourse parser structure.
+                # Connect utterance nodes sequentially instead.
+                for j in range(1, len(nodes) - 1):
+                    edges.append([j, j + 1])
+                    edge_types.append(self.graph_relation_dict["Continuation"])
+            else:
+                for head, tail, tp in parsed_dialogues[i]:
+                    if head != 0:
+                        edges.append([head, tail])
+                        edge_types.append(tp)
+            if self.args.ablation != "no_dummy":
+                for j in range(1, len(nodes)):
+                    edges.append([j, 0])
+                    if j - 1 in erc_indices[i]:
+                        edge_types.append(self.graph_relation_dict["Inter"])
+                    else:
+                        edge_types.append(self.graph_relation_dict["Self"])
             graph = {
                 "nodes": nodes,
                 "edges": edges,
@@ -239,7 +308,22 @@ class RobertaHeterogeneousGraph(RobertaBase):
                                                        graph_inputs["edge_types"])
         graph_embeddings, atten_weights_3 = self.conv3(graph_embeddings, graph_inputs["edges"],
                                                        graph_inputs["edge_types"])
-        graph_embeddings = graph_embeddings[dummy_indices, :]
+        if self.args.ablation == "no_dummy":
+            # Ablation: replace dummy-node readout with
+            # concatenated mean-max pooling over real dialogue nodes.
+            pooled_graphs = []
+            for start, size in zip(dummy_indices, graph_sizes):
+                # index `start` is only an internal placeholder;
+                # real utterance nodes are start+1 ... start+size-1.
+                node_states = graph_embeddings[start + 1:start + size, :]
+                mean_pool = torch.mean(node_states, dim=0)
+                max_pool = torch.max(node_states, dim=0).values
+                pooled_graphs.append(torch.cat([mean_pool, max_pool], dim=-1))
+
+            graph_embeddings = torch.stack(pooled_graphs, dim=0)
+        else:
+            graph_embeddings = graph_embeddings[dummy_indices, :]
+
         # Prediction
         embeddings = torch.cat((graph_embeddings, context_embeddings), dim=-1)
         # embeddings = graph_embeddings

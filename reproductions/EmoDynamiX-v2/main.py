@@ -46,6 +46,12 @@ if __name__ == '__main__':
     parser.add_argument('--erc_temperature', type=float, default=0.5)
     parser.add_argument('--erc_mixed', type=int, default=1)
     parser.add_argument('--hg_dim', type=int, default=512)
+    parser.add_argument(
+        '--ablation',
+        type=str,
+        default='full',
+        choices=['full', 'no_discourse', 'no_dummy', 'no_graph']
+    )
 
     args = parser.parse_args()
 
@@ -62,12 +68,18 @@ if __name__ == '__main__':
     valid_loader = DataLoader(valid_set, batch_size=args.batch_size, shuffle=False, collate_fn=valid_set.collate_fn)
     test_loader = DataLoader(test_set, batch_size=args.batch_size, shuffle=False, collate_fn=test_set.collate_fn)
 
+    run_tag = (
+        f"{args.model}-{args.dataset}"
+        if args.ablation == "full"
+        else f"{args.model}-{args.dataset}-{args.ablation}"
+    )
+
     training_args = TrainingArguments(
-        output_dir=f"./{args.model}-{args.dataset}-checkpoints",
+        output_dir=f"./{run_tag}-checkpoints",
         num_train_epochs=args.total_epochs,
         warmup_steps=args.warmup,
         weight_decay=args.weight_decay,
-        logging_dir=f'./{args.model}-{args.dataset}-logs',
+        logging_dir=f'./{run_tag}-logs',
         learning_rate=args.lr,
         save_steps=args.save_steps,
         eval_steps=args.eval_steps,
