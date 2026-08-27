@@ -1,0 +1,18 @@
+AnnoMI w/o Dummy Node
+Paper-description-based reconstruction / preliminary
+
+checkpoint: 1800
+
+accuracy: 0.3466
+macro_f1: 0.2829
+micro_f1: 0.3466
+weighted_f1: 0.3568
+preference_bias: 0.6183
+
+Reflection simple: 0.2720
+Reflection complex: 0.2098
+Question closed: 0.1443
+Question open: 0.2464
+Provide information: 0.2941
+Other: 0.5852
+Provide suggestion: 0.2286

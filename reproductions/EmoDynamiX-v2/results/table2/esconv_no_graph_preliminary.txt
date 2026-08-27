@@ -1,0 +1,18 @@
+ESConv w/o Graph Learning - PRELIMINARY / IMPLEMENTATION TO REVIEW
+
+checkpoint: 2600
+
+accuracy: 0.3199
+macro_f1: 0.2797
+micro_f1: 0.3199
+weighted_f1: 0.3173
+preference_bias: 0.3603
+
+Reflection of feelings: 0.1156
+Self-disclosure: 0.1759
+Question: 0.5056
+Affirmation and Reassurance: 0.1407
+Providing Suggestions: 0.3169
+Restatement or Paraphrasing: 0.3191
+Information: 0.2181
+Others: 0.4453

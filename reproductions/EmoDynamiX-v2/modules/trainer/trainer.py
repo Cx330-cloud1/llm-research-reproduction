@@ -53,11 +53,25 @@ class TrainerForMulticlassClassification:
                     contexts = batch["dialogue_history"]
                     preds = torch.argmax(y_pred, dim=-1).int().cpu().detach().numpy()
                     labels = batch.get("label").detach().numpy()
-                    attention_weights = []
-                    graph_size = len(outputs["graphs"][0]["nodes"]) - 1
-                    for w in outputs["attention_weights"]:
-                        attention_weights.append(w[1].detach().cpu().numpy()[-graph_size:].tolist())
-                    attention_weights = np.array(attention_weights).squeeze().transpose().tolist()
+
+                    # Graph-based models have graph structures and attention weights.
+                    # The no_graph ablation intentionally has neither.
+                    if outputs.get("graphs"):
+                        attention_weights = []
+                        graph_size = len(outputs["graphs"][0]["nodes"]) - 1
+                        for w in outputs["attention_weights"]:
+                            attention_weights.append(
+                                w[1].detach().cpu().numpy()[-graph_size:].tolist()
+                            )
+                        attention_weights = (
+                            np.array(attention_weights)
+                            .squeeze()
+                            .transpose()
+                            .tolist()
+                        )
+                    else:
+                        attention_weights = []
+
                     for i in range(len(contexts)):
                         cases.append({
                             "dialogue_history": [contexts[i], ],
@@ -65,7 +79,7 @@ class TrainerForMulticlassClassification:
                             "speaker_turn": [str(batch["speaker_turn"][i]), ],
                             "prediction": self.id2label[preds[i]],
                             "label": self.id2label[labels[i]],
-                            "graph": outputs["graphs"],
+                            "graph": outputs.get("graphs", []),
                             "attention_weights": attention_weights,
                             "erc_logits": outputs["erc_logits"].cpu().detach().numpy().tolist()
                         })

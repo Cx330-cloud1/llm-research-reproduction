@@ -1,0 +1,18 @@
+ESConv w/o Discourse Parser
+
+checkpoint: 3000
+
+accuracy: 0.2950
+macro_f1: 0.2611
+micro_f1: 0.2950
+weighted_f1: 0.3046
+preference_bias: 0.3734
+
+Reflection of feelings: 0.1092
+Self-disclosure: 0.1683
+Question: 0.4847
+Affirmation and Reassurance: 0.1694
+Providing Suggestions: 0.3354
+Restatement or Paraphrasing: 0.2878
+Information: 0.1327
+Others: 0.4010

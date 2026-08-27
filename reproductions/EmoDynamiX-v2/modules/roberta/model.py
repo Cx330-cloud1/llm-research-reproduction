@@ -116,7 +116,7 @@ class RobertaHeterogeneousGraph(RobertaBase):
 
         # Classification head
         self.num_classes = len(self.strategy2id) - 1 if args.exclude_others else len(self.strategy2id)
-        if args.ablation == "no_graph":
+        if args.ablation in ["no_graph", "flat"]:
             classifier_input_dim = self.roberta_config.hidden_size
         else:
             graph_readout_dim = graph_dim * 2 if args.ablation == "no_dummy" else graph_dim
@@ -165,6 +165,19 @@ class RobertaHeterogeneousGraph(RobertaBase):
             texts_for_erc.append(text_for_erc)
             dialogues_for_parsing.append(dialogue_for_parsing)
             flattened_contexts.append(context)
+        # Diagnostic baseline: Flattened Context only.
+        # No emotion tags, strategy tags, discourse graph, or graph learning.
+        if self.args.ablation == "flat":
+            context_embeddings = self.encode(flattened_contexts)
+            logits = self.classifier(context_embeddings)
+
+            return {
+                "logits": logits,
+                "graphs": [],
+                "attention_weights": [],
+                "erc_logits": torch.empty(0, device=self.device),
+            }
+
         # Discourse dependency parsing
         if self.lightmode:
             parsed_dialogues = samples["parsed_dialogue"]

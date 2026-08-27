@@ -1,0 +1,18 @@
+AnnoMI w/o Discourse Parser
+Paper-description-based reconstruction / preliminary
+
+checkpoint: 1050
+
+accuracy: 0.3761
+macro_f1: 0.2802
+micro_f1: 0.3761
+weighted_f1: 0.3615
+preference_bias: 0.3120
+
+Reflection simple: 0.2439
+Reflection complex: 0.1667
+Question closed: 0.2979
+Question open: 0.1651
+Provide information: 0.3175
+Other: 0.6005
+Provide suggestion: 0.1695

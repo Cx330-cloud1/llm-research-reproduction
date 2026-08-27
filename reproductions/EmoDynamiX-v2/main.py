@@ -50,7 +50,7 @@ if __name__ == '__main__':
         '--ablation',
         type=str,
         default='full',
-        choices=['full', 'no_discourse', 'no_dummy', 'no_graph']
+        choices=['full', 'no_discourse', 'no_dummy', 'no_graph', 'flat']
     )
 
     args = parser.parse_args()
