@@ -246,25 +246,33 @@ pre_trained_models/sequential_erc_model.pth
 
 ### SDDP
 
-EmoDynamiX 使用 Structured Dialogue Discourse Parser 构建 discourse structure。
+EmoDynamiX 使用 Structured Dialogue Discourse Parsing（SDDP）模块构建对话 discourse structure。官方 EmoDynamiX 仓库未直接提供完整可用的本地 SDDP checkpoint，因此本项目对该模块进行了独立恢复与验证。
 
-本项目完成：
+本次恢复完成了 SDDP 训练流程、原始 `spanningtrees` / `arsenal` 依赖以及 KBest spanning-tree decoder 的恢复。此前为了绕过依赖问题使用的空 decoder 会导致预测树为空，独立测试 F1 为 0；恢复官方 tree decoding 逻辑后，已有 3-epoch checkpoint 在 STAC 测试集上取得 **57.29 F1**。
 
-- SDDP 子项目恢复；
-- 依赖适配；
-- checkpoint 训练流程恢复；
-- EmoDynamiX parser 接口接入；
-- Full-mode 功能调用恢复。
+随后按照官方公开训练脚本的主要配置重新训练：
 
-由于原依赖兼容性和 discourse parsing 训练问题，本地独立 SDDP 指标尚未达到论文报告水平。
+- Dataset: STAC
+- Seed: 1
+- Learning rate: `2e-5`
+- Epochs: 6
+- Train batch size: 2
+- Warmup ratio: 0.1
+- Decoder: KBest spanning-tree decoder
 
-因此目前状态为：
+最终测试结果为：
 
-> **Functional Reconstruction, not Metric-Level Reproduction**
+| Experiment | F1 |
+|---|---:|
+| 3-epoch recovery checkpoint | 57.29 |
+| 6-epoch final checkpoint | **60.46** |
+| Independent checkpoint reload | **60.46** |
 
-同样，主模型 calibrated experiments 使用官方预处理的 `parsed_dialogue`，并不是本地重训 SDDP 重新生成的 discourse graph。
+保存 checkpoint 后重新独立加载并测试，仍得到：
 
----
+```text
+F1 = 0.6045929018789143
+```
 
 ## 8. Result Organization
 
