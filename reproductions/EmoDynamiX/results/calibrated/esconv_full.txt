@@ -1,0 +1,29 @@
+ESConv Full Model - Environment-Calibrated Reproduction
+
+Environment:
+Torch: 2.2.1+cu121
+Transformers: 4.37.2
+Datasets: 2.12.0
+PyArrow: 12.0.1
+NumPy: 1.23.5
+Pandas: 1.5.3
+Scikit-learn: 1.3.0
+GPU: NVIDIA GeForce RTX 4090
+Total steps: 3000
+
+checkpoint: 2200
+
+accuracy: 0.3188
+macro_f1: 0.2809
+micro_f1: 0.3188
+weighted_f1: 0.3204
+preference_bias: 0.4256
+
+Reflection of feelings: 0.1193
+Self-disclosure: 0.1528
+Question: 0.4872
+Affirmation and Reassurance: 0.1723
+Providing Suggestions: 0.3628
+Restatement or Paraphrasing: 0.3155
+Information: 0.2122
+Others: 0.4254

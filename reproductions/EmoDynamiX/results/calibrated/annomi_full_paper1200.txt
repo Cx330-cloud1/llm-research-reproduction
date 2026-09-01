@@ -1,0 +1,28 @@
+AnnoMI Full Model - Environment-Calibrated Reproduction
+
+Environment:
+Torch: 2.2.1+cu121
+Transformers: 4.37.2
+Datasets: 2.12.0
+PyArrow: 12.0.1
+NumPy: 1.23.5
+Pandas: 1.5.3
+Scikit-learn: 1.3.0
+GPU: NVIDIA GeForce RTX 4090
+Total steps: 1200
+
+checkpoint: 1200
+
+accuracy: 0.3340
+macro_f1: 0.2807
+micro_f1: 0.3340
+weighted_f1: 0.3438
+preference_bias: 0.4793
+
+Reflection simple: 0.2815
+Reflection complex: 0.2171
+Question closed: 0.1732
+Question open: 0.2353
+Provide information: 0.2778
+Other: 0.5385
+Provide suggestion: 0.2414

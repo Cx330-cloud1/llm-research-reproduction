@@ -1,0 +1,18 @@
+ESConv w/o Mixed Emotion - Environment-Calibrated Reproduction
+
+checkpoint: 2200
+
+accuracy: 0.3154
+macro_f1: 0.2713
+micro_f1: 0.3154
+weighted_f1: 0.3155
+preference_bias: 0.4125
+
+Reflection of feelings: 0.1203
+Self-disclosure: 0.1404
+Question: 0.4941
+Affirmation and Reassurance: 0.1662
+Providing Suggestions: 0.3654
+Restatement or Paraphrasing: 0.2829
+Information: 0.1843
+Others: 0.4169

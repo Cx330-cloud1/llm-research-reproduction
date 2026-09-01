@@ -1,0 +1,28 @@
+AnnoMI w/o Mixed Emotion - Environment-Calibrated Reproduction
+
+Environment:
+Torch: 2.2.1+cu121
+Transformers: 4.37.2
+Datasets: 2.12.0
+PyArrow: 12.0.1
+NumPy: 1.23.5
+Pandas: 1.5.3
+Scikit-learn: 1.3.0
+GPU: NVIDIA GeForce RTX 4090
+Total steps: 1200
+
+checkpoint: 1200
+
+accuracy: 0.3277
+macro_f1: 0.2700
+micro_f1: 0.3277
+weighted_f1: 0.3349
+preference_bias: 0.4057
+
+Reflection simple: 0.3158
+Reflection complex: 0.1849
+Question closed: 0.1176
+Question open: 0.2384
+Provide information: 0.3099
+Other: 0.5270
+Provide suggestion: 0.1967
