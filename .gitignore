@@ -1,1 +1,19 @@
 reproductions/MultiAgentESC/ollama-linux-amd64.tar.zst
+
+# Model weights
+*.pth
+*.pt
+*.bin
+*.ckpt
+*.safetensors
+
+# Logs and credentials
+*.log
+.env
+.env.*
+*.pem
+*.key
+
+# Cache
+__pycache__/
+*.pyc
