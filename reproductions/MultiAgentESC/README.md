@@ -37,10 +37,6 @@
 - ACL Anthology: https://aclanthology.org/2025.emnlp-main.232/
 - Official repository: https://github.com/MindIntLab-HFUT/MultiAgentESC
 
-本项目固定使用的官方代码 commit：
-
-`631b7f1961fc7502e547fd9258e847230dbcb973`
-
 ---
 
 ## 3. 正式实验环境
