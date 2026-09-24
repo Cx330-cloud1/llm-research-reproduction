@@ -1,0 +1,145 @@
+import pytest
+
+from scripts.export_emodynamix_logits import (
+    context_signature,
+    join_preprocessed,
+    verified_label_order,
+)
+
+
+MODEL_CONTEXT = {
+    "dialogue_history": "<START> </s> hello",
+    "strategy_history": "[-1, -1]",
+    "speaker_turn": "None seeker",
+}
+
+
+def test_context_signature_uses_all_three_model_inputs():
+    original = context_signature(MODEL_CONTEXT)
+
+    replacements = {
+        "dialogue_history": "<START> </s> changed",
+        "strategy_history": "[-1, 2]",
+        "speaker_turn": "seeker supporter",
+    }
+
+    for field, replacement in replacements.items():
+        changed = {
+            **MODEL_CONTEXT,
+            field: replacement,
+        }
+
+        assert context_signature(changed) != original
+
+
+def test_join_uses_all_three_model_inputs():
+    base_rows = [
+        {
+            "sample_id": "s1",
+            "model_context": MODEL_CONTEXT,
+        }
+    ]
+    preprocessed_rows = [
+        {
+            **MODEL_CONTEXT,
+            "parsed_dialogue": [],
+            "erc_logits": [[0.0] * 7],
+        }
+    ]
+
+    joined = join_preprocessed(base_rows, preprocessed_rows)
+
+    assert len(joined) == 1
+    assert joined[0][0]["sample_id"] == "s1"
+    assert joined[0][1]["parsed_dialogue"] == []
+    assert joined[0][1]["erc_logits"] == [[0.0] * 7]
+
+
+def test_duplicate_preprocessed_signature_fails_closed():
+    base_rows = [
+        {
+            "sample_id": "s1",
+            "model_context": MODEL_CONTEXT,
+        }
+    ]
+    preprocessed_rows = [
+        {**MODEL_CONTEXT},
+        {**MODEL_CONTEXT},
+    ]
+
+    with pytest.raises(
+        ValueError,
+        match="duplicate preprocessed signature",
+    ):
+        join_preprocessed(base_rows, preprocessed_rows)
+
+
+def test_duplicate_base_signature_fails_closed():
+    base_rows = [
+        {
+            "sample_id": "s1",
+            "model_context": MODEL_CONTEXT,
+        },
+        {
+            "sample_id": "s2",
+            "model_context": MODEL_CONTEXT,
+        },
+    ]
+    preprocessed_rows = [
+        {**MODEL_CONTEXT},
+    ]
+
+    with pytest.raises(
+        ValueError,
+        match="duplicate base signature",
+    ):
+        join_preprocessed(base_rows, preprocessed_rows)
+
+
+def test_missing_preprocessed_signature_fails_closed():
+    base_rows = [
+        {
+            "sample_id": "s1",
+            "model_context": MODEL_CONTEXT,
+        }
+    ]
+
+    with pytest.raises(
+        ValueError,
+        match="missing preprocessed signature",
+    ):
+        join_preprocessed(base_rows, [])
+
+
+def test_verified_label_order_uses_numeric_ids():
+    strategy2id = {
+        "Information": 1,
+        "Question": 0,
+        "Reflection": 2,
+    }
+    expected = [
+        "Question",
+        "Information",
+        "Reflection",
+    ]
+
+    assert verified_label_order(strategy2id, expected) == expected
+
+
+def test_verified_label_order_rejects_mismatch():
+    strategy2id = {
+        "Information": 1,
+        "Question": 0,
+        "Reflection": 2,
+    }
+    expected = [
+        "Information",
+        "Question",
+        "Reflection",
+    ]
+
+    with pytest.raises(
+        ValueError,
+        match="label order mismatch",
+    ):
+        verified_label_order(strategy2id, expected)
