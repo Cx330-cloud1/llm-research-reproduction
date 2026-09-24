@@ -1,0 +1,100 @@
+{"gold_strategy":"Others","original_dialogue_index":12,"reference_response":"I'm glad I could help and I wish you the best of luck!","sample_id":"test-d0012-u022","target_turn_index":22}
+{"gold_strategy":"Others","original_dialogue_index":32,"reference_response":"Good! I'm glad helped, even if just a little.","sample_id":"test-d0032-u024","target_turn_index":24}
+{"gold_strategy":"Question","original_dialogue_index":38,"reference_response":"Do you have any other questions or concerns?","sample_id":"test-d0038-u038","target_turn_index":38}
+{"gold_strategy":"Question","original_dialogue_index":40,"reference_response":"Any other counseling that I can give?","sample_id":"test-d0040-u065","target_turn_index":65}
+{"gold_strategy":"Information","original_dialogue_index":71,"reference_response":"you need to end the chat","sample_id":"test-d0071-u052","target_turn_index":52}
+{"gold_strategy":"Others","original_dialogue_index":74,"reference_response":"Thank you :)","sample_id":"test-d0074-u021","target_turn_index":21}
+{"gold_strategy":"Others","original_dialogue_index":133,"reference_response":"You are very welcome!","sample_id":"test-d0133-u022","target_turn_index":22}
+{"gold_strategy":"Others","original_dialogue_index":166,"reference_response":"your welcome have a good night.","sample_id":"test-d0166-u039","target_turn_index":39}
+{"gold_strategy":"Self-disclosure","original_dialogue_index":203,"reference_response":"Happy holidays and best wishes to you.","sample_id":"test-d0203-u032","target_turn_index":32}
+{"gold_strategy":"Information","original_dialogue_index":211,"reference_response":"I hear relaxing music and funny movies can do the trick.","sample_id":"test-d0211-u019","target_turn_index":19}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":215,"reference_response":"You seem like you know what you are doing, I think you will do just fine","sample_id":"test-d0215-u042","target_turn_index":42}
+{"gold_strategy":"Others","original_dialogue_index":228,"reference_response":"You as well!","sample_id":"test-d0228-u024","target_turn_index":24}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":234,"reference_response":"Have you considered playing again possibly joining an online team and competing in tournaments?","sample_id":"test-d0234-u020","target_turn_index":20}
+{"gold_strategy":"Information","original_dialogue_index":237,"reference_response":"I would calmly ask her. She will most likely deny it. But, some ofher friends may already know about this. If she says she did, ask her if there was something you did wrongthat made her do it. Sometimes its not even the Cheatee. Sometimes they just do it for no good reason.","sample_id":"test-d0237-u026","target_turn_index":26}
+{"gold_strategy":"Others","original_dialogue_index":239,"reference_response":"Have a wonderful evening!","sample_id":"test-d0239-u046","target_turn_index":46}
+{"gold_strategy":"Others","original_dialogue_index":244,"reference_response":"You are welcome. Goodbye.","sample_id":"test-d0244-u029","target_turn_index":29}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":284,"reference_response":"hope you feel better","sample_id":"test-d0284-u016","target_turn_index":16}
+{"gold_strategy":"Others","original_dialogue_index":291,"reference_response":"and you!","sample_id":"test-d0291-u030","target_turn_index":30}
+{"gold_strategy":"Others","original_dialogue_index":296,"reference_response":"you do the same and no problem :)","sample_id":"test-d0296-u041","target_turn_index":41}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":298,"reference_response":"Then follow up with a phone call","sample_id":"test-d0298-u049","target_turn_index":49}
+{"gold_strategy":"Information","original_dialogue_index":310,"reference_response":"Smoking and drinking alcohol can cause sleep problems before bed. Do you do those things? What troubles your rest, you think?","sample_id":"test-d0310-u024","target_turn_index":24}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":330,"reference_response":"I just wrote about aviation and also about politics","sample_id":"test-d0330-u047","target_turn_index":47}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":352,"reference_response":"not sure, i can cook myself however the situation pushes me unhealthy choice somehow lol. Btw, it helps for your current mood, does not it? I mean we are talking about other stuffs which make you think about your problem less?","sample_id":"test-d0352-u022","target_turn_index":22}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":375,"reference_response":"I would not talk to a mutual friend about this at all....","sample_id":"test-d0375-u021","target_turn_index":21}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":376,"reference_response":"Keep your head up, these sad days will pass","sample_id":"test-d0376-u044","target_turn_index":44}
+{"gold_strategy":"Others","original_dialogue_index":379,"reference_response":"Happy Holidays to you as well!","sample_id":"test-d0379-u020","target_turn_index":20}
+{"gold_strategy":"Others","original_dialogue_index":387,"reference_response":"Good Bye","sample_id":"test-d0387-u022","target_turn_index":22}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":404,"reference_response":"Good luck to you.","sample_id":"test-d0404-u037","target_turn_index":37}
+{"gold_strategy":"Reflection of feelings","original_dialogue_index":421,"reference_response":"I can through our messages that this is a very tough season for you","sample_id":"test-d0421-u017","target_turn_index":17}
+{"gold_strategy":"Others","original_dialogue_index":449,"reference_response":"And you have a lovely day too. I know that you are going to be just fine in a few weeks from now. Stay strong!","sample_id":"test-d0449-u061","target_turn_index":61}
+{"gold_strategy":"Self-disclosure","original_dialogue_index":454,"reference_response":"a few months","sample_id":"test-d0454-u033","target_turn_index":33}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":471,"reference_response":"That sounds like a fantastic idea.","sample_id":"test-d0471-u027","target_turn_index":27}
+{"gold_strategy":"Others","original_dialogue_index":481,"reference_response":"Have a good night!","sample_id":"test-d0481-u036","target_turn_index":36}
+{"gold_strategy":"Others","original_dialogue_index":483,"reference_response":"You are very welcome!","sample_id":"test-d0483-u033","target_turn_index":33}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":490,"reference_response":"It does not hurt to try. Maybe call her and tell her you have some things on your mind and could use some advice from her if it is not to much of a bother.","sample_id":"test-d0490-u023","target_turn_index":23}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":499,"reference_response":"I dont want to sound like a Christian fanatic or something like that but the Bible helps too. Ever since this pandemic started I started read it and It helped me a lot","sample_id":"test-d0499-u020","target_turn_index":20}
+{"gold_strategy":"Others","original_dialogue_index":517,"reference_response":"Would it be all right if I write you a Christmas card? If you would rather not give out your name/address, I totally understand.","sample_id":"test-d0517-u029","target_turn_index":29}
+{"gold_strategy":"Others","original_dialogue_index":526,"reference_response":"Yes, you too! have an amazing rest of your day!","sample_id":"test-d0526-u028","target_turn_index":28}
+{"gold_strategy":"Information","original_dialogue_index":528,"reference_response":"Based on the news and information I read, I think things should get better by the next spring.","sample_id":"test-d0528-u019","target_turn_index":19}
+{"gold_strategy":"Others","original_dialogue_index":563,"reference_response":"Sure, my pleasure!","sample_id":"test-d0563-u036","target_turn_index":36}
+{"gold_strategy":"Others","original_dialogue_index":612,"reference_response":"stay strong and stay safe","sample_id":"test-d0612-u034","target_turn_index":34}
+{"gold_strategy":"Others","original_dialogue_index":619,"reference_response":"Thank you!","sample_id":"test-d0619-u028","target_turn_index":28}
+{"gold_strategy":"Others","original_dialogue_index":623,"reference_response":"I'm glad I could be some help for you","sample_id":"test-d0623-u025","target_turn_index":25}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":628,"reference_response":"Yes of course, I hope this was helpful. You are doing the best you can and take pride in knowing that. :)","sample_id":"test-d0628-u031","target_turn_index":31}
+{"gold_strategy":"Others","original_dialogue_index":638,"reference_response":"I hear how this is making you sad not feeling supported in the way that you need to be. Know that you are worthy and will find a way to connect with them. I hope this has helped.","sample_id":"test-d0638-u020","target_turn_index":20}
+{"gold_strategy":"Reflection of feelings","original_dialogue_index":646,"reference_response":"I wholly believe you should gently but steadfastly confront her. I absolutely do not mean to suggest a dispute or argument. That will not help either. Simply ask her about the things that you KNOW aren't acceptable; lying about how long her trip was is one of them. Also, its okay to talk about how that stuff makes you feel, but try not to project your feelings as her fault. I know that it seems like they are... But she didn't MAKE you feel any specific way, even if her ACTIONS influenced how you were already feeling.","sample_id":"test-d0646-u022","target_turn_index":22}
+{"gold_strategy":"Others","original_dialogue_index":648,"reference_response":"I'm glad I could help. I hope you get to speak with your psychiatrist, or at least find a good one through an app.","sample_id":"test-d0648-u020","target_turn_index":20}
+{"gold_strategy":"Others","original_dialogue_index":651,"reference_response":"true. stay safe","sample_id":"test-d0651-u032","target_turn_index":32}
+{"gold_strategy":"Reflection of feelings","original_dialogue_index":653,"reference_response":"My pleasure dear friend","sample_id":"test-d0653-u023","target_turn_index":23}
+{"gold_strategy":"Others","original_dialogue_index":656,"reference_response":"You too","sample_id":"test-d0656-u025","target_turn_index":25}
+{"gold_strategy":"Others","original_dialogue_index":661,"reference_response":"You are very welcome!","sample_id":"test-d0661-u019","target_turn_index":19}
+{"gold_strategy":"Others","original_dialogue_index":670,"reference_response":"Yeah of course! I hope this helps you, and I wish you the best during these weird times :)","sample_id":"test-d0670-u022","target_turn_index":22}
+{"gold_strategy":"Others","original_dialogue_index":673,"reference_response":"I do not have any personal experience and yes they do sound amazing.","sample_id":"test-d0673-u019","target_turn_index":19}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":674,"reference_response":"please stay safe and communicate with your roommates","sample_id":"test-d0674-u029","target_turn_index":29}
+{"gold_strategy":"Others","original_dialogue_index":677,"reference_response":"Ok! then we can just wait for the 15 minute mark. Do you know when that will be?","sample_id":"test-d0677-u036","target_turn_index":36}
+{"gold_strategy":"Others","original_dialogue_index":682,"reference_response":"You are welcome. Can I help you with anything else?","sample_id":"test-d0682-u019","target_turn_index":19}
+{"gold_strategy":"Others","original_dialogue_index":687,"reference_response":"You're welcome.","sample_id":"test-d0687-u029","target_turn_index":29}
+{"gold_strategy":"Others","original_dialogue_index":690,"reference_response":"Your welcome","sample_id":"test-d0690-u027","target_turn_index":27}
+{"gold_strategy":"Reflection of feelings","original_dialogue_index":698,"reference_response":"No problem! Don't stress and just work on improving yourself!","sample_id":"test-d0698-u040","target_turn_index":40}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":703,"reference_response":"You're welcome! I hope I was somewhat helpful.","sample_id":"test-d0703-u023","target_turn_index":23}
+{"gold_strategy":"Others","original_dialogue_index":710,"reference_response":"bye","sample_id":"test-d0710-u029","target_turn_index":29}
+{"gold_strategy":"Others","original_dialogue_index":772,"reference_response":"you too","sample_id":"test-d0772-u024","target_turn_index":24}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":782,"reference_response":"Of course, that's understandable.","sample_id":"test-d0782-u019","target_turn_index":19}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":801,"reference_response":"have a good day!","sample_id":"test-d0801-u042","target_turn_index":42}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":806,"reference_response":"Maybe having a professional in your career path review your resume would be helpful","sample_id":"test-d0806-u018","target_turn_index":18}
+{"gold_strategy":"Others","original_dialogue_index":811,"reference_response":"You as well!","sample_id":"test-d0811-u025","target_turn_index":25}
+{"gold_strategy":"Others","original_dialogue_index":818,"reference_response":"I hope you do as well!","sample_id":"test-d0818-u025","target_turn_index":25}
+{"gold_strategy":"Others","original_dialogue_index":858,"reference_response":"you are welcome. Good luck! I hope you find resolution and find a way to save your friendship!","sample_id":"test-d0858-u028","target_turn_index":28}
+{"gold_strategy":"Others","original_dialogue_index":874,"reference_response":"Okay it has been nice chatting with you, feel free to end the chat now, goodbye.","sample_id":"test-d0874-u026","target_turn_index":26}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":891,"reference_response":"Come back anytime if you ever wanna talk again!","sample_id":"test-d0891-u026","target_turn_index":26}
+{"gold_strategy":"Others","original_dialogue_index":931,"reference_response":"Excellent! im so happy to hear that, Maybe next time youll be the one to inspire someone! Have a great rest of your day!","sample_id":"test-d0931-u036","target_turn_index":36}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":946,"reference_response":"and make sure you are not hard on yourself. you're getting by. you're hanging in there. you are doing well under the circumstances.","sample_id":"test-d0946-u050","target_turn_index":50}
+{"gold_strategy":"Question","original_dialogue_index":968,"reference_response":"Ha, well after two years, feelings had to have changed. Even a little. Does he live nearby?","sample_id":"test-d0968-u023","target_turn_index":23}
+{"gold_strategy":"Others","original_dialogue_index":970,"reference_response":"You can end the chat safely now","sample_id":"test-d0970-u044","target_turn_index":44}
+{"gold_strategy":"Others","original_dialogue_index":977,"reference_response":"(please click the quit button)","sample_id":"test-d0977-u032","target_turn_index":32}
+{"gold_strategy":"Self-disclosure","original_dialogue_index":979,"reference_response":"Yes, I am a parent with 2 kids and can understand your situation very well","sample_id":"test-d0979-u024","target_turn_index":24}
+{"gold_strategy":"Others","original_dialogue_index":997,"reference_response":"just hit the quit button and fill out the survey :) Don't press return tho!","sample_id":"test-d0997-u026","target_turn_index":26}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":998,"reference_response":"We can't end the HIT till you press quit and take the survey :)","sample_id":"test-d0998-u026","target_turn_index":26}
+{"gold_strategy":"Others","original_dialogue_index":999,"reference_response":"which vaccine did you get?","sample_id":"test-d0999-u034","target_turn_index":34}
+{"gold_strategy":"Others","original_dialogue_index":1011,"reference_response":"You are welcome. I am sorry for your loss and I hope for the best for you.","sample_id":"test-d1011-u022","target_turn_index":22}
+{"gold_strategy":"Question","original_dialogue_index":1043,"reference_response":"(can you press quit from your end; I am not allowed to do it from mine. Cheers!)","sample_id":"test-d1043-u023","target_turn_index":23}
+{"gold_strategy":"Others","original_dialogue_index":1075,"reference_response":"im proud of you for finding something that calms you down","sample_id":"test-d1075-u038","target_turn_index":38}
+{"gold_strategy":"Others","original_dialogue_index":1079,"reference_response":"I hope that helps and good luck!","sample_id":"test-d1079-u040","target_turn_index":40}
+{"gold_strategy":"Information","original_dialogue_index":1080,"reference_response":"I have tried both and both are amazing :)","sample_id":"test-d1080-u018","target_turn_index":18}
+{"gold_strategy":"Reflection of feelings","original_dialogue_index":1096,"reference_response":"i face this situation long time ago i try my best and then i come out easily because i try my best","sample_id":"test-d1096-u022","target_turn_index":22}
+{"gold_strategy":"Others","original_dialogue_index":1100,"reference_response":"But im here for you but if we are done lets wrap it up :) yes, byee","sample_id":"test-d1100-u025","target_turn_index":25}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":1108,"reference_response":"(you need to quit first .. I can't this end :))","sample_id":"test-d1108-u044","target_turn_index":44}
+{"gold_strategy":"Others","original_dialogue_index":1120,"reference_response":"thank you","sample_id":"test-d1120-u019","target_turn_index":19}
+{"gold_strategy":"Affirmation and Reassurance","original_dialogue_index":1122,"reference_response":"Yeah, anything to take your mind of it :)","sample_id":"test-d1122-u023","target_turn_index":23}
+{"gold_strategy":"Others","original_dialogue_index":1134,"reference_response":"Hope you feel relaxed just chatting with me for a change","sample_id":"test-d1134-u028","target_turn_index":28}
+{"gold_strategy":"Others","original_dialogue_index":1144,"reference_response":"You are welcome. Do have a nice day","sample_id":"test-d1144-u043","target_turn_index":43}
+{"gold_strategy":"Others","original_dialogue_index":1156,"reference_response":"Bye","sample_id":"test-d1156-u027","target_turn_index":27}
+{"gold_strategy":"Others","original_dialogue_index":1160,"reference_response":"Bye","sample_id":"test-d1160-u021","target_turn_index":21}
+{"gold_strategy":"Question","original_dialogue_index":1222,"reference_response":"Are you currently working?","sample_id":"test-d1222-u027","target_turn_index":27}
+{"gold_strategy":"Information","original_dialogue_index":1256,"reference_response":"You as well. You are in charge on what you commit to, Just make sure you create goals that are simple, measurable and timebound. I look forward to speaking to you next time.","sample_id":"test-d1256-u030","target_turn_index":30}
+{"gold_strategy":"Providing Suggestions","original_dialogue_index":1259,"reference_response":"Best wishes :) You need to press quit from your end though cos I can't do it from my end :)","sample_id":"test-d1259-u019","target_turn_index":19}
+{"gold_strategy":"Others","original_dialogue_index":1272,"reference_response":"nice talking to you!","sample_id":"test-d1272-u045","target_turn_index":45}
+{"gold_strategy":"Others","original_dialogue_index":1277,"reference_response":"Could you please close the chat..","sample_id":"test-d1277-u024","target_turn_index":24}
+{"gold_strategy":"Others","original_dialogue_index":1281,"reference_response":"Thank you and same to you.","sample_id":"test-d1281-u026","target_turn_index":26}
+{"gold_strategy":"Reflection of feelings","original_dialogue_index":1286,"reference_response":"I wish you the very best .","sample_id":"test-d1286-u022","target_turn_index":22}
