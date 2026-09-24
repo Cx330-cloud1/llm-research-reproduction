@@ -1,0 +1,11 @@
+{
+  "model_revision": "qwen2.5:7b",
+  "temperature": 0.0,
+  "max_tokens": 400,
+  "response_word_limit": 30,
+  "seed": 42,
+  "retries": 3,
+  "state_prompt_version": "state-v1",
+  "response_prompt_version": "response-v1",
+  "selector_prompt_version": "selector-v1"
+}

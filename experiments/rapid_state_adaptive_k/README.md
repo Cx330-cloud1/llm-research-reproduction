@@ -24,22 +24,11 @@
 
 ### RTX 4090 租赁实例
 
-只负责：
-
-- 加载已有 EmoDynamiX checkpoint
-- 对固定样本导出原始 strategy logits
-- 导出 Emotion、Cause、Intention、Support Need
-- 不重新训练 EmoDynamiX
+只负责加载已有 EmoDynamiX checkpoint，并导出固定样本的 8 类原始 strategy logits。EmoDynamiX 不生成 State Card。
 
 ### A800 租赁实例
 
-只负责：
-
-- 使用同一个 Qwen2.5-7B 模型生成回复
-- 生成 Top-1/Top-2 候选
-- 执行固定 response selector
-- 执行辅助 LLM judge
-- 记录 token、延迟、失败和重试
+负责使用同一 Qwen2.5-7B revision 依次提取 Emotion、Cause、Intention、Support Need，构造 State Card，生成 Top-1/Top-2 候选，并运行固定 selector 与辅助 judge。
 
 4090 与 A800 不需要同时开机。所有脚本先在本地准备并提交，再分别拉取到对应实例运行。
 

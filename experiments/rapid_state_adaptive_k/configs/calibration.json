@@ -1,0 +1,26 @@
+{
+  "temperature_min": 0.05,
+  "temperature_max": 10.0,
+  "temperature_grid_size": 2001,
+  "ece_bins": 10,
+  "probability_thresholds": [
+    0.50,
+    0.55,
+    0.60,
+    0.65,
+    0.70,
+    0.75,
+    0.80
+  ],
+  "margin_thresholds": [
+    0.10,
+    0.15,
+    0.20,
+    0.25,
+    0.30,
+    0.35
+  ],
+  "max_top2_recall_drop": 0.01,
+  "minimum_candidate_saving": 0.20,
+  "allocation_seed": 42
+}

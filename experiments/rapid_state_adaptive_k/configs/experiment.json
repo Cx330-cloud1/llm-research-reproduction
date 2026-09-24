@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "dataset": "../../../reproductions/MultiAgentESC/data/ESConv.json",
+  "official_split_seed": 13,
+  "sampling_seed": 42,
+  "pilot_size": 100,
+  "smoke_size": 20,
+  "label_order": [
+    "Question",
+    "Restatement or Paraphrasing",
+    "Reflection of feelings",
+    "Self-disclosure",
+    "Affirmation and Reassurance",
+    "Providing Suggestions",
+    "Information",
+    "Others"
+  ]
+}
