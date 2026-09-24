@@ -1,6 +1,6 @@
 # Rapid State + Adaptive-k 实验系统设计
 
-日期：2026-09-23  
+日期：2026-09-23
 状态：已确认，待实施
 
 ## 1. 目标与边界
@@ -31,13 +31,17 @@ test dialogues  → 每对话最后目标轮 → pilot100 → smoke20
   ↓
 4090：EmoDynamiX checkpoint-2600
   ↓
-raw strategy logits + label order + predicted state
+raw strategy logits + label order
   ↓
 本地：Temperature Scaling + calibrated probabilities
   ↓
 K1 / K2 / KA / KR 分配清单
   ↓
-A800：Qwen2.5-7B 回复生成与固定 selector
+A800：Qwen2.5-7B 四字段状态提取
+  ↓
+Emotion + Cause + Intention + Support Need → State Card
+  ↓
+A800：指定策略候选生成与固定 selector
   ↓
 本地：自动评价、人工 pilot、错误分析
 ```
@@ -46,7 +50,7 @@ A800：Qwen2.5-7B 回复生成与固定 selector
 
 - 本地 Windows：代码、manifest、校准、Adaptive-k、评价和报告。
 - RTX 4090：加载已有 EmoDynamiX checkpoint 并导出真实 logits；不重训。
-- A800：运行 Qwen2.5-7B 候选生成、固定 selector 和辅助 judge。
+- A800：使用同一 Qwen2.5-7B 依次运行四字段状态提取、候选生成、固定 selector 和辅助 judge。
 - 两张租赁卡不同时开启。
 
 ## 4. 上下文定义
@@ -77,11 +81,13 @@ A800：Qwen2.5-7B 回复生成与固定 selector
 
 完整策略分类指标可在官方 test 的全部目标轮上报告；pilot100 仅用于快速回复实验。
 
-## 6. Manifest 与评价侧文件
+## 6. 分阶段交接文件与评价侧文件
 
-### 6.1 生成清单
+字段按产生阶段逐步增加，禁止在早期 manifest 中预填尚未生成的状态或预测结果。
 
-`generation_manifest.jsonl` 仅包含模型运行允许看到的信息：
+### 6.1 基础样本清单
+
+`base_manifest.jsonl` 由本地构建，仅包含：
 
 ```text
 schema_version
@@ -93,18 +99,46 @@ visible_turn_ids
 model_context
 generation_context
 context_hash
-predicted_state
-state_card
+```
+
+### 6.2 策略预测结果
+
+`strategy_results.jsonl` 由 4090 导出并在本地校准，按 `sample_id` 与基础清单连接：
+
+```text
+sample_id
 strategy_logits
 label_order
 raw_probabilities
 calibrated_probabilities
 top1_strategy
 top2_strategy
-condition_id
+calibration_id
 ```
 
-### 6.2 评价侧文件
+### 6.3 状态提取结果
+
+`state_results.jsonl` 由 A800 上的 Qwen2.5-7B 产生：
+
+```text
+sample_id
+emotion
+cause
+intention
+support_need
+state_card
+model_revision
+prompt_hash
+status
+attempts
+error
+```
+
+### 6.4 回复生成任务
+
+`generation_tasks.jsonl` 由本地将基础样本、策略结果与状态结果按 `sample_id` 连接后构建，并加入 `condition_id`、候选 strategy、缓存键和 Prompt 版本。F0 不读取状态；F1 使用四个原始字段；F2 使用压缩 State Card；F3 使用固定乱序的其他样本 State Card。
+
+### 6.5 评价侧文件
 
 `evaluation_sidecar.jsonl` 只在本地评价阶段使用：
 
@@ -119,6 +153,10 @@ target_turn_index
 gold strategy 与 reference response 不进入 A800 生成输入。
 
 ## 7. 状态实验
+
+状态字段不由 EmoDynamiX 产生。它们由 A800 上与回复生成相同 revision 的 Qwen2.5-7B 通过冻结 Prompt 依次推断。现有 MultiAgentESC `_analysis()` 提供 Emotion、Event/Cause、Intention；本实验增加第四个 Support Need 调用，其输入只包含可见上下文和前三个状态字段。随后使用确定性模板压缩为 State Card。
+
+本实验验证的是“显式状态接口是否改善同一生成模型的回复”，不将结果表述为独立状态模型优于 Qwen，也不将 State Card 归因于 EmoDynamiX。
 
 | ID | State input | 目的 |
 |---|---|---|
@@ -258,11 +296,14 @@ experiments/rapid_state_adaptive_k/
 │   ├── validate_manifests.py
 │   ├── export_emodynamix_logits.py
 │   ├── calibrate_and_allocate.py
+│   ├── extract_state.py
 │   └── build_generation_tasks.py
 ├── tests/
 │   ├── test_build_manifests.py
 │   ├── test_validate_manifests.py
-│   └── test_calibration.py
+│   ├── test_calibration.py
+│   ├── test_state_extraction.py
+│   └── test_generation_tasks.py
 └── reports/
 ```
 
@@ -291,10 +332,11 @@ experiments/rapid_state_adaptive_k/
 ## 16. 实施顺序
 
 ```text
-本地：manifest 与测试
+本地：base manifest 与测试
 → 4090：资产核对与 logits 导出
 → 本地：校准与 K 分配
-→ A800：smoke20
-→ A800：pilot100
+→ A800：smoke20 状态提取
+→ A800：smoke20 候选生成与 selector
+→ A800：pilot100 状态提取与候选生成
 → 本地：评价、人工 pilot 与报告
 ```
