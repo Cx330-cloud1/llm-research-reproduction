@@ -143,3 +143,9 @@ def test_verified_label_order_rejects_mismatch():
         match="label order mismatch",
     ):
         verified_label_order(strategy2id, expected)
+
+
+def test_smoke20_collection_selects_only_smoke20():
+    from scripts.export_emodynamix_logits import selected_collections
+
+    assert selected_collections("smoke20") == ["smoke20"]

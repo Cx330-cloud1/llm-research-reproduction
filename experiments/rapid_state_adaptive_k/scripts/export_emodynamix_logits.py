@@ -33,6 +33,17 @@ COLLECTION_SPLITS = {
 }
 
 
+def selected_collections(collection: str) -> list[str]:
+    """Return the collections selected for model inference."""
+    if collection == "all":
+        return list(COLLECTION_SPLITS)
+
+    if collection not in COLLECTION_SPLITS:
+        raise ValueError(f"unknown collection: {collection}")
+
+    return [collection]
+
+
 def sha256_file(path: str | Path) -> str:
     file_path = Path(path)
     digest = hashlib.sha256()
@@ -368,6 +379,12 @@ def make_parser() -> argparse.ArgumentParser:
         help="Destination for strategy_results.raw.jsonl.",
     )
     parser.add_argument(
+        "--collection",
+        choices=["smoke20", "pilot100", "dev_cal", "all"],
+        default="all",
+        help="Collection to export; default exports all collections.",
+    )
+    parser.add_argument(
         "--batch-size",
         type=int,
         default=1,
@@ -571,9 +588,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         preflight,
     )
 
+    collections = selected_collections(args.collection)
+
     base_rows_by_collection = {
-        collection: read_jsonl(path)
-        for collection, path in manifest_paths.items()
+        collection: read_jsonl(manifest_paths[collection])
+        for collection in collections
     }
 
     output_paths = {
@@ -582,7 +601,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             / collection
             / "strategy_results.raw.jsonl"
         )
-        for collection in COLLECTION_SPLITS
+        for collection in collections
     }
 
     pending_collections = []
@@ -614,13 +633,21 @@ def main(argv: Sequence[str] | None = None) -> int:
     if not pending_collections:
         return 0
 
-    valid_preprocessed = load_pickle_rows(valid_pkl_path)
-    test_preprocessed = load_pickle_rows(test_pkl_path)
-
-    preprocessed_by_split = {
-        "valid": valid_preprocessed,
-        "test": test_preprocessed,
+    required_splits = {
+        COLLECTION_SPLITS[collection]
+        for collection in pending_collections
     }
+    preprocessed_by_split = {}
+
+    if "valid" in required_splits:
+        preprocessed_by_split["valid"] = load_pickle_rows(
+            valid_pkl_path
+        )
+
+    if "test" in required_splits:
+        preprocessed_by_split["test"] = load_pickle_rows(
+            test_pkl_path
+        )
 
     joined_by_collection = {}
 
