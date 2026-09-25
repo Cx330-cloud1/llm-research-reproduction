@@ -75,8 +75,31 @@ def join_preprocessed(
     """
     Join manifest rows to EmoDynamiX-preprocessed rows.
 
-    Ambiguous and missing matches fail closed.
+    Only signatures required by the base manifest are indexed.
+    Ambiguous and missing target matches fail closed, while
+    duplicate signatures unrelated to the target collection are ignored.
     """
+    base_signatures: list[
+        tuple[Mapping[str, Any], str]
+    ] = []
+    target_signatures: set[str] = set()
+
+    for base_row in base_rows:
+        signature = context_signature(base_row["model_context"])
+
+        if signature in target_signatures:
+            raise ValueError(
+                f"duplicate base signature: {signature}"
+            )
+
+        target_signatures.add(signature)
+        base_signatures.append(
+            (
+                base_row,
+                signature,
+            )
+        )
+
     preprocessed_by_signature: dict[
         str,
         Mapping[str, Any],
@@ -84,6 +107,9 @@ def join_preprocessed(
 
     for row in preprocessed_rows:
         signature = context_signature(row)
+
+        if signature not in target_signatures:
+            continue
 
         if signature in preprocessed_by_signature:
             raise ValueError(
@@ -95,18 +121,11 @@ def join_preprocessed(
     joined: list[
         tuple[Mapping[str, Any], Mapping[str, Any]]
     ] = []
-    seen_base_signatures: set[str] = set()
 
-    for base_row in base_rows:
-        sample_id = str(base_row.get("sample_id", "<unknown>"))
-        signature = context_signature(base_row["model_context"])
-
-        if signature in seen_base_signatures:
-            raise ValueError(
-                f"duplicate base signature: {signature}"
-            )
-
-        seen_base_signatures.add(signature)
+    for base_row, signature in base_signatures:
+        sample_id = str(
+            base_row.get("sample_id", "<unknown>")
+        )
 
         if signature not in preprocessed_by_signature:
             raise ValueError(

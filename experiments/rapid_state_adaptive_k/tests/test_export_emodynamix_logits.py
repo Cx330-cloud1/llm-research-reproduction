@@ -74,6 +74,40 @@ def test_duplicate_preprocessed_signature_fails_closed():
         join_preprocessed(base_rows, preprocessed_rows)
 
 
+def test_irrelevant_duplicate_preprocessed_signature_is_ignored():
+    base_rows = [
+        {
+            "sample_id": "s1",
+            "model_context": MODEL_CONTEXT,
+        }
+    ]
+
+    irrelevant_context = {
+        "dialogue_history": "<START> </s> irrelevant",
+        "strategy_history": "[-1, -1]",
+        "speaker_turn": "None seeker",
+    }
+
+    preprocessed_rows = [
+        {
+            **MODEL_CONTEXT,
+            "parsed_dialogue": [],
+            "erc_logits": [[0.0] * 7],
+        },
+        {
+            **irrelevant_context,
+        },
+        {
+            **irrelevant_context,
+        },
+    ]
+
+    joined = join_preprocessed(base_rows, preprocessed_rows)
+
+    assert len(joined) == 1
+    assert joined[0][0]["sample_id"] == "s1"
+
+
 def test_duplicate_base_signature_fails_closed():
     base_rows = [
         {
