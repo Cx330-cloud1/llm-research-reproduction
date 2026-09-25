@@ -428,6 +428,7 @@ def load_model(
         erc_temperature = 0.5
         erc_mixed = 1
         hg_dim = 512
+        ablation = "full"
 
     root_string = str(emodynamix_root)
 
