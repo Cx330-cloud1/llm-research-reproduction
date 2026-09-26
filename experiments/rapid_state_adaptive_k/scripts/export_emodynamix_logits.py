@@ -55,15 +55,141 @@ def sha256_file(path: str | Path) -> str:
     return digest.hexdigest()
 
 
-def context_signature(model_context: Mapping[str, Any]) -> str:
-    """Return a deterministic signature for all model-visible inputs."""
+def _normalize_speaker_turn(value: Any) -> str:
+    """
+    Normalize the empty initial speaker state.
+
+    The frozen manifest stores it as the string "None",
+    while official EmoDynamiX preprocessing stores it as NaN.
+    """
+    if value is None:
+        return "None"
+
+    try:
+        if math.isnan(value):
+            return "None"
+    except (TypeError, ValueError):
+        pass
+
+    return str(value)
+
+
+def _normalize_model_value(value: Any) -> Any:
+    """
+    Convert model-visible values into a deterministic,
+    JSON-safe representation.
+    """
+    if hasattr(value, "detach"):
+        value = value.detach().cpu().tolist()
+    elif (
+        hasattr(value, "tolist")
+        and not isinstance(
+            value,
+            (
+                str,
+                bytes,
+                dict,
+                list,
+                tuple,
+            ),
+        )
+    ):
+        value = value.tolist()
+
+    if isinstance(value, Mapping):
+        return {
+            str(key): _normalize_model_value(item)
+            for key, item in sorted(
+                value.items(),
+                key=lambda pair: str(pair[0]),
+            )
+        }
+
+    if isinstance(value, (list, tuple)):
+        return [
+            _normalize_model_value(item)
+            for item in value
+        ]
+
+    if isinstance(value, set):
+        normalized = [
+            _normalize_model_value(item)
+            for item in value
+        ]
+        return sorted(
+            normalized,
+            key=repr,
+        )
+
+    if isinstance(value, float) and math.isnan(value):
+        return "<NAN>"
+
+    if isinstance(
+        value,
+        (
+            str,
+            int,
+            float,
+            bool,
+        ),
+    ) or value is None:
+        return value
+
+    return repr(value)
+
+
+def context_signature(
+    model_context: Mapping[str, Any],
+) -> str:
+    """
+    Return the deterministic signature used to align
+    frozen manifest rows with EmoDynamiX-preprocessed rows.
+
+    NaN and "None" are equivalent representations of
+    the empty initial speaker state.
+    """
     return sha256_json(
         {
-            "dialogue_history": model_context["dialogue_history"],
+            "dialogue_history": str(
+                model_context["dialogue_history"]
+            ),
             "strategy_history": str(
                 model_context["strategy_history"]
             ),
-            "speaker_turn": str(model_context["speaker_turn"]),
+            "speaker_turn": _normalize_speaker_turn(
+                model_context["speaker_turn"]
+            ),
+        }
+    )
+
+
+def _preprocessed_model_input_signature(
+    row: Mapping[str, Any],
+) -> str:
+    """
+    Fingerprint the complete model-visible EmoDynamiX input.
+
+    Duplicate preprocessed rows may share a join signature.
+    They are safe to collapse only if the complete inputs
+    consumed by inference are identical.
+    """
+    return sha256_json(
+        {
+            "dialogue_history": _normalize_model_value(
+                row["dialogue_history"]
+            ),
+            "strategy_history": _normalize_model_value(
+                row["strategy_history"]
+            ),
+            "speaker_turn": _normalize_speaker_turn(
+                row["speaker_turn"]
+            ),
+            "parsed_dialogue": _normalize_model_value(
+                row["parsed_dialogue"]
+            ),
+            "erc_logits": _normalize_model_value(
+                row["erc_logits"]
+            ),
         }
     )
 
@@ -71,28 +197,38 @@ def context_signature(model_context: Mapping[str, Any]) -> str:
 def join_preprocessed(
     base_rows: Sequence[Mapping[str, Any]],
     preprocessed_rows: Sequence[Mapping[str, Any]],
-) -> list[tuple[Mapping[str, Any], Mapping[str, Any]]]:
+) -> list[
+    tuple[
+        Mapping[str, Any],
+        Mapping[str, Any],
+    ]
+]:
     """
-    Join manifest rows to EmoDynamiX-preprocessed rows.
+    Join frozen manifest rows to EmoDynamiX-preprocessed rows.
 
-    Only signatures required by the base manifest are indexed.
-    Ambiguous and missing target matches fail closed, while
-    duplicate signatures unrelated to the target collection are ignored.
+    Multiple manifest rows may legitimately have the same
+    model-visible context and share one preprocessed input.
+
+    Multiple preprocessed rows with the same context signature
+    are allowed only when their complete model-visible inputs
+    are identical. Otherwise the join fails closed.
     """
     base_signatures: list[
-        tuple[Mapping[str, Any], str]
+        tuple[
+            Mapping[str, Any],
+            str,
+        ]
     ] = []
+
     target_signatures: set[str] = set()
 
     for base_row in base_rows:
-        signature = context_signature(base_row["model_context"])
-
-        if signature in target_signatures:
-            raise ValueError(
-                f"duplicate base signature: {signature}"
-            )
+        signature = context_signature(
+            base_row["model_context"]
+        )
 
         target_signatures.add(signature)
+
         base_signatures.append(
             (
                 base_row,
@@ -105,38 +241,73 @@ def join_preprocessed(
         Mapping[str, Any],
     ] = {}
 
+    input_signature_by_context: dict[
+        str,
+        str,
+    ] = {}
+
     for row in preprocessed_rows:
         signature = context_signature(row)
 
         if signature not in target_signatures:
             continue
 
+        full_input_signature = (
+            _preprocessed_model_input_signature(row)
+        )
+
         if signature in preprocessed_by_signature:
-            raise ValueError(
-                f"duplicate preprocessed signature: {signature}"
+            previous_input_signature = (
+                input_signature_by_context[signature]
             )
+
+            if (
+                full_input_signature
+                != previous_input_signature
+            ):
+                raise ValueError(
+                    "ambiguous preprocessed signature: "
+                    f"{signature}"
+                )
+
+            # Same context signature and exactly the same
+            # full model input. One representative is enough.
+            continue
 
         preprocessed_by_signature[signature] = row
 
+        input_signature_by_context[
+            signature
+        ] = full_input_signature
+
     joined: list[
-        tuple[Mapping[str, Any], Mapping[str, Any]]
+        tuple[
+            Mapping[str, Any],
+            Mapping[str, Any],
+        ]
     ] = []
 
     for base_row, signature in base_signatures:
         sample_id = str(
-            base_row.get("sample_id", "<unknown>")
+            base_row.get(
+                "sample_id",
+                "<unknown>",
+            )
         )
 
         if signature not in preprocessed_by_signature:
             raise ValueError(
                 "missing preprocessed signature "
-                f"for sample_id={sample_id}: {signature}"
+                f"for sample_id={sample_id}: "
+                f"{signature}"
             )
 
         joined.append(
             (
                 base_row,
-                preprocessed_by_signature[signature],
+                preprocessed_by_signature[
+                    signature
+                ],
             )
         )
 
