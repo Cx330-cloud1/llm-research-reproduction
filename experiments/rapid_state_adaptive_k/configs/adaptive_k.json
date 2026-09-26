@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "fit_split": "dev_cal",
+  "temperature": 1.2668311505016923,
+  "rule": "K=1 iff top1_confidence >= tau_conf AND top1_top2_margin >= tau_margin; otherwise K=2",
+  "tau_conf": 0.1826179654463193,
+  "tau_margin": 0.06444243350710538,
+  "k_min": 1,
+  "k_max": 2,
+  "dev_cal_reference": {
+    "fixed_k1_coverage": 0.3008817046289493,
+    "fixed_k2_coverage": 0.4757531227038942,
+    "adaptive_coverage": 0.3894195444526084,
+    "average_k": 1.5,
+    "k1_rate": 0.5,
+    "k2_rate": 0.5
+  },
+  "selection_note": "Primary operating point selected before pilot100 evaluation. pilot100 must not be used to retune these thresholds."
+}
