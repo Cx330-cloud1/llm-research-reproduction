@@ -1,0 +1,40 @@
+{
+  "method": "SCM",
+  "task": "official_book_summarization",
+  "setting": "Qwen2.5-7B-Instruct compatibility",
+  "official_repo": "/root/autodl-tmp/paper_repro/SCM4LLMs",
+  "official_baseline_commit": "26216044f5d4caccc0303d86667b491ead11d878",
+  "book_file": "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/ChineseBook/平凡的世界.txt",
+  "book_name": "平凡的世界.txt",
+  "mode": "no_scm",
+  "generation_backbone": "/root/autodl-tmp/models/Qwen2.5-7B-Instruct",
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 1024,
+    "legacy_stop_strings_applied_post_decode": [
+      "\\n\\n\\n",
+      "###"
+    ]
+  },
+  "token_budget_compatibility": {
+    "tokenizer_model": "text-davinci-003",
+    "book_split_max_tokens": 3000,
+    "previous_raw_threshold": 500,
+    "hierarchical_group_tokens": 2300,
+    "official_context_limit": 4000
+  },
+  "language": "Chinese",
+  "encoding": "utf-8",
+  "num_chunks": 586,
+  "book_chunk_tokens_p50k_sum": 1738982,
+  "chunk_summary_tokens_p50k_sum": 174650,
+  "final_summary_tokens_p50k": 355,
+  "final_summary": "《平凡的世界》通过孙少平和孙少安的故事展现了普通人在社会变革中的奋斗与坚持。孙少平努力赢得同事认可并与惠英嫂共度温馨时光；孙少安通过砖厂改善家庭经济状况，赢得村民认可但面临压力。两人各自经历家庭变故和情感困扰，孙少平因工伤住院后选择返回煤矿逃避现实。这些事件展示了年轻人的爱情、家庭和社会压力，以及普通人面对挑战的奋斗与坚持。",
+  "compatibility_notes": [
+    "Original book data and SCM/no-SCM book algorithm are preserved.",
+    "Official book prompts are imported from prompts/book.py.",
+    "Legacy OpenAI generation is replaced by local Qwen2.5-7B-Instruct.",
+    "text-davinci-003 tiktoken accounting is retained for splitter and SummaryBot budgets.",
+    "Qwen generation uses deterministic greedy decoding for reproducibility."
+  ]
+}

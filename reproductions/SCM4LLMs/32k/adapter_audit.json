@@ -1,0 +1,20 @@
+{
+  "questions": 589,
+  "future_leakage": 0,
+  "content_mismatch": 0,
+  "roles": {
+    "system": 3073,
+    "user": 51293,
+    "assistant": 44068
+  },
+  "unit_size_distribution": {
+    "1": 10686,
+    "2": 43874
+  },
+  "memory_units_per_question": {
+    "min": 51,
+    "max": 144,
+    "avg": 92.63157894736842
+  },
+  "mapping_rule": "adjacent user->assistant messages are one SCM memory turn; all other original messages become standalone turn-like memory units"
+}

@@ -1,0 +1,25 @@
+{
+  "official_commit": "26216044f5d4caccc0303d86667b491ead11d878",
+  "backbone": "/root/autodl-tmp/models/Qwen2.5-7B-Instruct",
+  "compatibility_setting": true,
+  "historical_generation_replaced_with_qwen": true,
+  "historical_stop_postprocessing": [
+    "\\n\\n\\n",
+    "###"
+  ],
+  "davinci_compatible_output_token_cap_p50k": 1024,
+  "meeting_max_tokens": 2800,
+  "previous_raw_threshold": 500,
+  "final_group_tokens": 2300,
+  "official_meetings": 20,
+  "completed_pairs": 40,
+  "completed_scm": 20,
+  "completed_no_scm": 20,
+  "meetings_with_both": 20,
+  "stop_hits": {
+    "theme_records": 0,
+    "chunk_summaries": 0,
+    "final_hierarchical": 0
+  },
+  "note": "Generation only. Final quality must be evaluated separately. This is a Qwen compatibility reproduction, not strict historical OpenAI numeric replay."
+}

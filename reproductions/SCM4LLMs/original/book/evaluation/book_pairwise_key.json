@@ -1,0 +1,82 @@
+[
+  {
+    "pair_id": "book_01",
+    "book": "三体.txt",
+    "mapping": {
+      "A": "no_scm",
+      "B": "scm"
+    }
+  },
+  {
+    "pair_id": "book_02",
+    "book": "三国演义.txt",
+    "mapping": {
+      "A": "scm",
+      "B": "no_scm"
+    }
+  },
+  {
+    "pair_id": "book_03",
+    "book": "哈利.波特中文版1.txt",
+    "mapping": {
+      "A": "scm",
+      "B": "no_scm"
+    }
+  },
+  {
+    "pair_id": "book_04",
+    "book": "平凡的世界.txt",
+    "mapping": {
+      "A": "scm",
+      "B": "no_scm"
+    }
+  },
+  {
+    "pair_id": "book_05",
+    "book": "西游记.txt",
+    "mapping": {
+      "A": "no_scm",
+      "B": "scm"
+    }
+  },
+  {
+    "pair_id": "book_06",
+    "book": "Gone_With_The_Wind.txt",
+    "mapping": {
+      "A": "no_scm",
+      "B": "scm"
+    }
+  },
+  {
+    "pair_id": "book_07",
+    "book": "Jane_Eyre.txt",
+    "mapping": {
+      "A": "no_scm",
+      "B": "scm"
+    }
+  },
+  {
+    "pair_id": "book_08",
+    "book": "The_Great_Gatsby.txt",
+    "mapping": {
+      "A": "scm",
+      "B": "no_scm"
+    }
+  },
+  {
+    "pair_id": "book_09",
+    "book": "The_Life_and_Adventures_of_Robinson_Crusoe.txt",
+    "mapping": {
+      "A": "scm",
+      "B": "no_scm"
+    }
+  },
+  {
+    "pair_id": "book_10",
+    "book": "The_Old_Man_and_the_Sea.txt",
+    "mapping": {
+      "A": "scm",
+      "B": "no_scm"
+    }
+  }
+]

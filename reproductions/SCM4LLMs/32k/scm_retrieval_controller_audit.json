@@ -1,0 +1,28 @@
+{
+  "questions": 589,
+  "topk": 6,
+  "max_history_tokens": 2500,
+  "max_previous_turn_tokens": 500,
+  "controller_needed": 2,
+  "controller_not_needed": 587,
+  "safe_if_all_selected_turns_summary": 2,
+  "official_nontermination_risk": 0,
+  "previous_turn_raw": 589,
+  "previous_turn_summary": 0,
+  "raw_budget_stats": {
+    "min": 190,
+    "median": 1751,
+    "p95": 2308,
+    "p99": 2428,
+    "max": 2574
+  },
+  "all_summary_budget_stats": {
+    "min": 190,
+    "median": 677,
+    "p95": 969,
+    "p99": 1098,
+    "max": 1176
+  },
+  "similarity": "cosine",
+  "retrieval_candidates": "all memory units except last; last unit is previous turn"
+}

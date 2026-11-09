@@ -1,0 +1,11 @@
+{
+  "dataset": "PersonaMem-1M",
+  "unique_units": 23502,
+  "summary_records": 23502,
+  "qwen_generated": 18736,
+  "raw_short_path": 4766,
+  "missing": 0,
+  "duplicates": 0,
+  "all_summaries_nonempty": true,
+  "status": "PASS"
+}

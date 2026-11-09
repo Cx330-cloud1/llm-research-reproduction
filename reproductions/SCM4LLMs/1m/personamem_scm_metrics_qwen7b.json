@@ -1,0 +1,75 @@
+{
+  "method": "SCM",
+  "dataset": "PersonaMem-1M",
+  "setting": "compatibility",
+  "text_llm": "Qwen2.5-7B-Instruct",
+  "embedding": "Contriever",
+  "similar_top_k": 6,
+  "max_history_tokens": 2500,
+  "max_previous_turn_tokens": 500,
+  "max_new_tokens": 512,
+  "model_context_limit": 32768,
+  "questions": 2674,
+  "correct": 934,
+  "overall_accuracy": 0.3492894540014959,
+  "unparsed": 234,
+  "controller_triggered": 7,
+  "per_question_type": {
+    "acknowledge_latest_user_preferences": {
+      "correct": 275,
+      "total": 768,
+      "accuracy": 0.3580729166666667,
+      "unparsed": 104
+    },
+    "generalizing_to_new_scenarios": {
+      "correct": 82,
+      "total": 295,
+      "accuracy": 0.27796610169491526,
+      "unparsed": 20
+    },
+    "provide_preference_aligned_recommendations": {
+      "correct": 96,
+      "total": 280,
+      "accuracy": 0.34285714285714286,
+      "unparsed": 36
+    },
+    "recall_user_shared_facts": {
+      "correct": 77,
+      "total": 144,
+      "accuracy": 0.5347222222222222,
+      "unparsed": 5
+    },
+    "revisit_reasons_behind_preference_updates": {
+      "correct": 120,
+      "total": 235,
+      "accuracy": 0.5106382978723404,
+      "unparsed": 34
+    },
+    "suggest_new_ideas": {
+      "correct": 153,
+      "total": 727,
+      "accuracy": 0.21045392022008252,
+      "unparsed": 31
+    },
+    "track_full_preference_updates": {
+      "correct": 131,
+      "total": 225,
+      "accuracy": 0.5822222222222222,
+      "unparsed": 4
+    }
+  },
+  "prompt_token_stats": {
+    "min": 382,
+    "median": 1353,
+    "p95": 2470,
+    "p99": 2800,
+    "max": 3252
+  },
+  "input_files": {
+    "data": "/root/autodl-tmp/paper_repro/adapters/scm_personamem_1m/question_metadata.jsonl",
+    "unique": "/root/autodl-tmp/paper_repro/adapters/scm_personamem_1m/unique_scm_memory_units.jsonl",
+    "summaries": "/root/autodl-tmp/paper_repro/adapters/scm_personamem_1m/scm_summaries_qwen7b.jsonl",
+    "topk": "/root/autodl-tmp/paper_repro/adapters/scm_personamem_1m/scm_top6_retrieval.jsonl",
+    "controller": "/root/autodl-tmp/paper_repro/adapters/scm_personamem_1m/scm_controller_qwen7b.jsonl"
+  }
+}

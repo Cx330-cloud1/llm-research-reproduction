@@ -1,0 +1,19 @@
+{
+  "evaluation_type": "LLM-based compatibility evaluation",
+  "judge": "ChatGPT",
+  "blind_pairwise": true,
+  "books": 10,
+  "coverage": {
+    "scm_wins": 7,
+    "no_scm_wins": 3,
+    "scm_win_rate": 0.7,
+    "no_scm_win_rate": 0.3
+  },
+  "coherence": {
+    "scm_wins": 4,
+    "no_scm_wins": 6,
+    "scm_win_rate": 0.4,
+    "no_scm_win_rate": 0.6
+  },
+  "important_note": "This is an LLM-based compatibility evaluation. It must not be reported as the original paper's human blind evaluation."
+}

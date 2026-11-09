@@ -1,0 +1,21 @@
+{
+  "questions": 589,
+  "total_unit_instances": 54560,
+  "unique_units": 2287,
+  "reused_instances": 52273,
+  "reuse_ratio": 0.9580828445747801,
+  "summary_needed_instances": 42347,
+  "summary_needed_unique": 1743,
+  "summary_threshold_tokens": 300,
+  "prompt_token_stats": {
+    "min": 81,
+    "median": 384,
+    "p95": 473,
+    "p99": 512,
+    "max": 1047
+  },
+  "unit_size_distribution": {
+    "1": 10686,
+    "2": 43874
+  }
+}

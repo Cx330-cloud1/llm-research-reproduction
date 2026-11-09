@@ -1,0 +1,20 @@
+{
+  "official_commit": "26216044f5d4caccc0303d86667b491ead11d878",
+  "backbone": "/root/autodl-tmp/models/Qwen2.5-7B-Instruct",
+  "embedding_model": "/root/autodl-tmp/paper_repro/MemGAS/facebook/contriever",
+  "compatibility_setting": true,
+  "top_k": 6,
+  "max_history_tokens": 2500,
+  "max_previous_turn_tokens": 500,
+  "questions_total": 105,
+  "questions_by_lang": {
+    "zh": 52,
+    "en": 53
+  },
+  "questions_by_mode": {
+    "single-turn": 49,
+    "multi-turn": 56
+  },
+  "controller_used_total": 42,
+  "note": "Generation only; no automatic QA accuracy claimed. Evaluate against gold separately."
+}

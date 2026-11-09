@@ -1,0 +1,42 @@
+{
+  "dataset": "PersonaMem-1M",
+  "questions": 2674,
+  "unique_units": 23502,
+  "unit_instances": 5173472,
+  "deduplication_ratio": 0.9954572093943874,
+  "duplicate_unique_rows": 0,
+  "hash_mismatches": 0,
+  "raw_text_reconstruction_mismatches": 0,
+  "missing_hash_references": 0,
+  "duplicate_mapping_question_ids": 0,
+  "duplicate_metadata_question_ids": 0,
+  "missing_metadata_ids_sample": [],
+  "missing_mapping_ids_sample": [],
+  "summary_tokenizer": "text-davinci-003",
+  "summary_threshold_tokens": 300,
+  "summary_needed_unique": 18736,
+  "summary_short_path_unique": 4766,
+  "summary_needed_instances": 4379473,
+  "prompt_token_stats": {
+    "min": 74,
+    "median": 388,
+    "p95": 894,
+    "p99": 1173,
+    "max": 23684
+  },
+  "units_per_question": {
+    "min": 958,
+    "max": 2052
+  },
+  "checks": {
+    "question_count_matches_adapter": true,
+    "mapping_metadata_ids_match": true,
+    "unique_count_matches_adapter": true,
+    "unit_instances_match_adapter": true,
+    "no_duplicate_unique_units": true,
+    "all_unit_hashes_valid": true,
+    "all_raw_text_reconstructed": true,
+    "all_mapping_hashes_resolve": true
+  },
+  "all_checks_pass": true
+}

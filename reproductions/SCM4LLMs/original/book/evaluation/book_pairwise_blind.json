@@ -1,0 +1,102 @@
+[
+  {
+    "pair_id": "book_01",
+    "book": "三体.txt",
+    "summary_A": "文档讲述了科学家汪淼和叶文洁在复杂科研环境中的经历，涉及科学与军事的关系、物理规律的探讨以及科学探索中的不确定性。汪淼在实验中发现神秘倒计时，引发他对科学边界的思考；叶文洁在红岸基地参与科研项目，发射信号接收到外星文明警告，促使人类反思自身行为。《三体》游戏中展示了科学探索与个人命运之间的复杂关系，反映了人类在面对未知灾难时的挣扎与抉择。程心因星环城事件被制裁，与罗辑在冥王星相遇，太阳系逐渐二维化，她启动曲率驱动引擎离开，最终抵达蓝星并与关一帆等人探讨宇宙末日和维度攻击，决定维护两个文明命运。",
+    "summary_B": "程心作为执剑人在黑暗森林威慑中坚守岗位，面对质疑决定竞选执剑人回应母性本能。在智子干预下，部分人口幸存，程心努力寻找与智子联系。三体舰队威胁下，“万有引力”号和“蓝色空间”号采取措施减速。程心成为母爱化身，前往空中别墅与云天明会面，途中目睹太空日出。程心和艾AA逃离地球，飞往木星，参与掩体计划取得技术突破，发现冬眠成为日常生活。面对归零者威胁，程心与关一帆寻找其他生命延续地球文明，进入智子创造的封闭循环世界，克服危机返回大宇宙，携带文明记忆返回，并留下封闭生态球。",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  },
+  {
+    "pair_id": "book_02",
+    "book": "三国演义.txt",
+    "summary_A": "三国时期，曹操收编勇将欲屠徐州，刘备应允救援，后曹操击败吕布，邀请刘备接管徐州。曹操与刘备结盟对抗吕布，因粮食短缺撤军。曹操巩固势力，与张绣和解，联合孙策、刘备共同对付袁术。曹操计划征讨吕布，需警惕袁绍和刘表的干涉。关羽投奔刘备，展现忠诚与勇武。曹操在官渡之战中大败袁绍，善待投降者，严惩背叛者。刘备结识赵云、关羽、张飞等将领，前往夏口与周瑜会面。周瑜设伏未对关羽下手，诸葛亮策划火烧新野、水淹曹军，在赤壁之战中曹军损失惨重。刘备为联姻东吴，派遣孙乾前往谈判，最终在甘露寺与孙权完婚。庞统建议从不同路径进攻雒城，最终在诸葛亮策划下，刘备击败张任，攻占雒城，收服益州，制定宽仁政策。面对孙权索要荆州的要求，诸葛亮通过智谋说服刘备暂时归还部分领土，化解了危机。关羽坚守桃园结义誓言，拒绝归还荆州，单刀赴会；曹操平定皇后家族，分兵击败张卫，攻打濡须口，孙权奋力抵抗，董袭牺牲，陈武和徐盛受伤，陆逊率军击败曹军。刘备鼓励黄忠再战，黄忠利用隐语斩杀夏侯渊；关羽预测大雨来袭，成功击败庞德，坚守樊城。刘备进攻东吴未果，陆逊坚守使蜀军受挫；诸葛亮成功抵御曹丕五路大军，促成与东吴联盟，并平定南蛮，擒获敌首，迫使孟获投降。诸葛亮采用内外夹击、火攻等策略，成功削弱魏军力量并在上方谷重创司马懿。最终，三国归于晋帝司马炎，实现统一。\n\n经过提炼和压缩，这段摘要保留了核心信息，突出了主要人物及关键事件，字数约为1300个字符。",
+    "summary_B": "三国时期，曹操与多个势力如袁术、吕布、刘备等交战，通过采纳郭嘉建议，先结盟刘备，再图谋吕布，并最终击败吕布。刘备在诸葛亮辅佐下占据荆州和益州，采用火攻击败曹军，与孙权合作成功击败曹操，形成三国鼎立局面。关羽在荆州保卫战中被俘害，刘备誓言复仇但未果。诸葛亮多次与司马懿交锋，虽然在街亭之战中因马谡失误导致损失，但仍通过智谋和战术成功抵御司马懿的进攻。诸葛亮去世后，姜维多次请求伐魏但因兵力不足撤军。最终，西晋通过镇压反对势力和平定叛乱，实现三国归晋的统一局面。",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  },
+  {
+    "pair_id": "book_03",
+    "book": "哈利.波特中文版1.txt",
+    "summary_A": "这篇小说讲述了哈利·波特发现自己是巫师并进入霍格沃茨魔法学校的过程。哈利在德思礼家度过了充满神秘事件和挑战的童年，最终在十一岁生日时得知自己的真实身份。在霍格沃茨，哈利结识了朋友，经历了各种课程和比赛，逐渐适应了魔法世界的生活。学年末，哈利和他的朋友们继续寻找尼可·勒梅，期间哈利获得隐形斗篷并在镜子中见到已故亲人。哈利在魁地奇比赛中成功捕捉飞贼，发现斯内普可能图谋不轨。复活节期间，他们送挪威脊背龙诺伯至查理处，遭遇干扰后受到处罚。在禁林中，他们发现吸食独角兽血液的人，意识到伏地魔可能寻找魔法石。最终，在邓布利多指导下，哈利取得魔法石，阻止了奇洛，魔法石被销毁。哈利母亲的爱保护了他，最终格兰芬多学院在颁奖典礼上追平了斯莱特林学院。",
+    "summary_B": "哈利·波特在十一岁生日时得知自己是巫师，并在邓布利多和麦格教授的帮助下前往霍格沃茨。在那里，他与罗恩、赫敏建立了深厚的友谊，参与了分院仪式，学习了飞行课，并被任命为找球手。哈利勇敢地保护魔法石，与朋友们发现关于魔法石的线索，最终依靠智慧和勇气战胜奇洛，揭示了魔法石的真相，认识到爱的力量。邓布利多解释哈利父亲救过斯内普，霍格沃茨颁奖仪式上邓布利多表扬哈利、罗恩和赫敏，使格兰芬多追平斯莱特林。学年末，哈利和他的朋友们离校，准备回家，哈利期待未来。",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  },
+  {
+    "pair_id": "book_04",
+    "book": "平凡的世界.txt",
+    "summary_A": "《平凡的世界》描绘了1970年代末中国黄土高原上孙少安和孙少平两兄弟的奋斗历程。孙少安通过推行生产责任制和开办砖厂改善村民生活，尽管面临市场竞争和不正之风，仍坚持努力；孙少平在煤矿工作，展现坚韧和乐观精神，帮助同事。兄弟俩在经济困境中维持煤矿生产，解决家庭问题，积极寻求个人发展。双水村村民在严重旱情下团结协作，成功挖掘水源，展现了集体责任感和牺牲精神。孙少安重建破旧学校并得到妻子支持，孙少平因矿区工作受伤，在金秀照顾下恢复信心，但因伤疤自卑而避开她。新建小学的落成典礼给了孙少平希望，他通过改变装扮增强自信返回煤矿工作。这些经历反映了农村社会的变化和人们的精神追求。\n\n最终摘要（保留最紧凑的30%核心信息）：\n孙少安通过推行责任制和开办砖厂改善村民生活，孙少平在煤矿展现坚韧精神，双水村村民团结协作挖掘水源，孙少安重建学校，孙少平因伤恢复信心后返回煤矿工作。这些经历体现了农村社会变化和人们的精神追求。",
+    "summary_B": "《平凡的世界》通过孙少平和孙少安的故事展现了普通人在社会变革中的奋斗与坚持。孙少平努力赢得同事认可并与惠英嫂共度温馨时光；孙少安通过砖厂改善家庭经济状况，赢得村民认可但面临压力。两人各自经历家庭变故和情感困扰，孙少平因工伤住院后选择返回煤矿逃避现实。这些事件展示了年轻人的爱情、家庭和社会压力，以及普通人面对挑战的奋斗与坚持。",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  },
+  {
+    "pair_id": "book_05",
+    "book": "西游记.txt",
+    "summary_A": "《西游记》讲述了唐僧师徒四人取经途中经历的种种困难与挑战。孙悟空凭借智慧和力量多次救出师父，如解救被错认的唐僧、战胜牛魔王和九头虫等妖怪。他们帮助乌鸡国国王恢复生机，解救被红孩儿掳走的唐僧，解决误饮子母河水的问题，并在智渊寺通过祈雨和坐禅比赛证明清白。此外，师徒四人在取经过程中还帮助朱紫国国王治愈疾病，保护皇后，与赛太岁激战；在比丘国帮助国王解救无辜儿童，劝其减少色欲；在玉华州因误会而被误认为妖怪，后通过展示武艺赢得尊敬，并收下王子徒弟；在元宵节期间营救被妖怪劫持的唐僧，借助天庭力量战胜牛魔王。面对地灵县的误会和冤屈，他们依然克服困难取得有字真经。最终，唐僧被封为旃檀功德佛，孙悟空、猪八戒和沙僧也获得封号，圆满结束取经之旅。",
+    "summary_B": "《西游记》讲述了唐僧师徒四人历经重重困难，最终取得真经的故事。孙悟空从成为猴王到被压五行山，后皈依佛门，凭借高超的智慧和武艺多次战胜妖怪，保护了师徒的安全。途中他们遭遇各种妖魔，如黑水河妖怪、鼍龙、红孩儿、黄风怪、黄袍怪等，依靠智慧和力量克服困难。唐僧在取经过程中多次被妖怪掳走，如在镇海寺和钦法国，但最终都被孙悟空成功救出。师徒四人还帮助熄灭火焰山、洗清金光寺和尚的冤屈、救治朱紫国国王疾病等。最终，在观音菩萨的帮助下，他们取得了五千零四十八卷真经，归途中克服过通天河的险阻，受到唐太宗的热烈欢迎与表彰，被授予佛门职位，真经被誊抄传布。",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  },
+  {
+    "pair_id": "book_06",
+    "book": "Gone_With_The_Wind.txt",
+    "summary_A": "\"Gone with the Wind\" centers on Scarlett O'Hara's journey through the American Civil War and its aftermath in the antebellum South. Scarlett, driven by her ambition and desire for social standing, navigates complex relationships with Rhett Butler, Ashley Wilkes, and other characters. The narrative explores her emotional turmoil, strategic manipulations, and resilience in the face of societal pressures and personal challenges. Set against the backdrop of war and reconstruction, the story highlights the tension between traditional roles and modernity, with Scarlett's character evolving from a constrained young woman to a determined leader. Key themes include Scarlett's romantic entanglements, her family dynamics, and the societal impact of the war on individuals and communities.",
+    "summary_B": "This document examines the emotional and social dynamics of the Civil War-era South through the characters of Rhett Butler and Scarlett O'Hara. Set during the American Civil War, the narrative follows Scarlett's transformation from a privileged Southern belle to a pragmatic survivor, navigating romantic entanglements and family conflicts. Rhett's disillusionment with Southern values and his efforts to protect his daughter and secure their future are central. Scarlett grapples with her love for Ashley and her pragmatic approach to survival. After Melanie's death, Scarlett experiences deep loneliness and emotional pain, finding solace in the idea of reuniting with Rhett, whom she ultimately rejects. Despite heartbreak, Scarlett resolves to return to Tara and devise a plan to win Rhett back, showcasing her resilience.",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  },
+  {
+    "pair_id": "book_07",
+    "book": "Jane_Eyre.txt",
+    "summary_A": "Charlotte Brontë's \"Jane Eyre\" narrates Jane's journey from mistreatment at Gateshead Hall to her eventual marriage to Mr. Rochester. Initially, Jane faces harsh conditions at Lowood Institution but finds solace in nature and support from Helen Burns. Her friendship with Bessie and her role as a governess at Thornfield Hall introduce her to Mr. Rochester, whose complex past and evolving relationship with Jane add depth to the narrative. Jane's internal struggles and moral growth are evident throughout, especially when she overhears conversations about Grace Poole and contemplates her feelings for Mr. Rochester. \n\nReturning to Gateshead and Thornfield Hall, Jane navigates complex familial relationships and emotional turmoil, ultimately deciding to leave Thornfield after learning of Mr. Rochester's marriage to the insane Bertha Mason. She then joins Mr. St. John Rivers and his sisters before finding a new position as a schoolmistress in Morton. Jane's journey is marked by emotional and spiritual growth, culminating in her reunion with Mr. Rochester, whom she marries quietly, supporting him through his trials. Their enduring love and companionship symbolize the novel's themes of devotion and eternal joy.",
+    "summary_B": "Charlotte Brontë, in her preface to the third edition of \"Jane Eyre,\" defends her work's moral value and dedicates it to W.M. Thackeray. The novel follows Jane Eyre, who, after being mistreated by her relatives, finds solace at Lowood Institution, where she faces hardships but finds guidance from Miss Temple. Jane's journey continues at Thornfield Hall, where she forms a bond with Adèle and Mr. Rochester, while grappling with her feelings and the social dynamics around her. Jane's relationship with Mr. Rochester is complex, marked by mutual respect and affection, yet fraught with emotional turmoil. After a failed wedding, Jane leaves Thornfield but returns when Rochester confesses his past and desire for her. Jane eventually accepts a teaching position offered by Mr. St. John Rivers, who proposes a missionary journey to India, an offer Jane declines. Jane reconnects with her distant relatives and marries Rochester, who regains partial sight, finding happiness together. Meanwhile, St. John leaves for India, dedicated to his missionary work.",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  },
+  {
+    "pair_id": "book_08",
+    "book": "The_Great_Gatsby.txt",
+    "summary_A": "\"The Great Gatsby\" by F. Scott Fitzgerald centers on the complex relationships and events surrounding Jay Gatsby, Daisy Buchanan, and Tom Buchanan. Nick Carraway, who moves to New York and befriends the Buchanans, observes the social divide and superficiality among the wealthy. Gatsby's lavish parties and mysterious past set the stage for his pursuit of Daisy, leading to conflicts with Tom. Myrtle Wilson's tragic death and George Wilson's subsequent arrest further complicate the narrative. Nick, as a witness, attempts to navigate the chaos. The novel explores themes of love, deception, and the disillusionment of the American Dream, ultimately ending in Gatsby's tragic demise.",
+    "summary_B": "\"The Great Gatsby\" by F. Scott Fitzgerald explores the complex relationships and events surrounding Jay Gatsby and Daisy Buchanan during the Roaring Twenties. Set against the backdrop of opulent parties and social decay, the novel highlights Gatsby's journey from modest origins to an extravagant lifestyle, his failed attempts to win back Daisy, and the tragic consequences of his pursuit of the American Dream. Gatsby's interactions with Tom Buchanan and Nick Carraway reveal the moral and social decay beneath the surface of the wealthy elite, while his reunion with Daisy is marked by awkwardness and miscommunication. The narrative ultimately underscores the decline of Gatsby's social status and the disillusionment of the era, reflecting broader themes of dreams, reality, and the erosion of traditional values in post-war America.",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  },
+  {
+    "pair_id": "book_09",
+    "book": "The_Life_and_Adventures_of_Robinson_Crusoe.txt",
+    "summary_A": "Robinson Crusoe, born in 1632, embarked on a seafaring life despite his father's wishes, facing numerous challenges including a shipwreck that left him stranded on an island. Through resilience and resourcefulness, he survived, built a shelter, and cultivated crops. His spiritual journey involved turning to the Bible for solace, leading to a profound transformation and a deeper understanding of divine providence. Crusoe eventually rescued a dog and two men, befriended a native named Friday, and planned their escape. He strategically negotiated with mutineers, secured the ship, and returned to England with substantial wealth. Crusoe then returned to his island colony, facing further challenges, and lived a life marked by both hardship and contentment.",
+    "summary_B": "Robinson Crusoe, born in 1632, defied his father's advice and embarked on a life at sea, eventually being captured by pirates and enslaved. After escaping with a companion, Xury, he established a settlement on a deserted island, demonstrating remarkable resourcefulness and resilience. Crusoe experienced a profound spiritual transformation after surviving a severe illness, attributing his recovery to divine intervention. He engaged in agricultural experiments, built shelters, and made pottery, facing numerous challenges but remaining determined. His interactions with a native named Friday led to mutual learning and companionship, enhancing his survival skills and spiritual growth. Crusoe and his crew successfully captured mutineers and left the island, returning to England with news of a profitable plantation and generous repayment. He planned to honor his benefactor and considered future adventures, including a private trading voyage to the East Indies where he assisted in establishing a colony.",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  },
+  {
+    "pair_id": "book_10",
+    "book": "The_Old_Man_and_the_Sea.txt",
+    "summary_A": "Santiago, an elderly fisherman from \"The Old Man and the Sea,\" faces an 84-day streak of bad luck but maintains a positive attitude. Reflecting on past fishing trips and his relationship with the boy Manolin, Santiago sets out to catch a fish, contemplating the sea as a feminine entity that can be both kind and cruel. During his journey, he battles a large marlin, experiencing physical and mental exhaustion, and faces attacks from sharks. Despite these challenges, Santiago shows remarkable resilience and determination, ultimately returning home with the marlin's skeleton. His journey highlights themes of perseverance, the bond between mentor and apprentice, and the enduring human spirit in the face of adversity.",
+    "summary_B": "In Ernest Hemingway's \"The Old Man and the Sea,\" Santiago, an elderly fisherman, forms a bond with a young boy and sets out to sea in search of a fish. Despite his recent streak of bad luck and the boy's father's disapproval, Santiago maintains a positive attitude and hopes for a good catch. His journey is marked by resilience and a deep connection to nature as he battles a large marlin, faces physical and mental challenges, and ultimately struggles against sharks. Santiago's interactions with the boy, his reflections on his past, and his determination to overcome formidable odds highlight themes of mentorship, perseverance, and the enduring spirit of a fisherman. Although he returns home with only half the marlin due to shark attacks, Santiago's journey underscores his dignity and resilience.",
+    "coverage_winner": "",
+    "coherence_winner": "",
+    "coverage_comment": "",
+    "coherence_comment": ""
+  }
+]

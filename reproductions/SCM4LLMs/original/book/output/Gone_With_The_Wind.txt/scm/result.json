@@ -1,0 +1,40 @@
+{
+  "method": "SCM",
+  "task": "official_book_summarization",
+  "setting": "Qwen2.5-7B-Instruct compatibility",
+  "official_repo": "/root/autodl-tmp/paper_repro/SCM4LLMs",
+  "official_baseline_commit": "26216044f5d4caccc0303d86667b491ead11d878",
+  "book_file": "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/EnglishBook/Gone_With_The_Wind.txt",
+  "book_name": "Gone_With_The_Wind.txt",
+  "mode": "scm",
+  "generation_backbone": "/root/autodl-tmp/models/Qwen2.5-7B-Instruct",
+  "generation": {
+    "do_sample": false,
+    "max_new_tokens": 1024,
+    "legacy_stop_strings_applied_post_decode": [
+      "\\n\\n\\n",
+      "###"
+    ]
+  },
+  "token_budget_compatibility": {
+    "tokenizer_model": "text-davinci-003",
+    "book_split_max_tokens": 3000,
+    "previous_raw_threshold": 500,
+    "hierarchical_group_tokens": 2300,
+    "official_context_limit": 4000
+  },
+  "language": "English",
+  "encoding": "ascii",
+  "num_chunks": 197,
+  "book_chunk_tokens_p50k_sum": 612714,
+  "chunk_summary_tokens_p50k_sum": 27926,
+  "final_summary_tokens_p50k": 154,
+  "final_summary": "This document examines the emotional and social dynamics of the Civil War-era South through the characters of Rhett Butler and Scarlett O'Hara. Set during the American Civil War, the narrative follows Scarlett's transformation from a privileged Southern belle to a pragmatic survivor, navigating romantic entanglements and family conflicts. Rhett's disillusionment with Southern values and his efforts to protect his daughter and secure their future are central. Scarlett grapples with her love for Ashley and her pragmatic approach to survival. After Melanie's death, Scarlett experiences deep loneliness and emotional pain, finding solace in the idea of reuniting with Rhett, whom she ultimately rejects. Despite heartbreak, Scarlett resolves to return to Tara and devise a plan to win Rhett back, showcasing her resilience.",
+  "compatibility_notes": [
+    "Original book data and SCM/no-SCM book algorithm are preserved.",
+    "Official book prompts are imported from prompts/book.py.",
+    "Legacy OpenAI generation is replaced by local Qwen2.5-7B-Instruct.",
+    "text-davinci-003 tiktoken accounting is retained for splitter and SummaryBot budgets.",
+    "Qwen generation uses deterministic greedy decoding for reproducibility."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "task": "SCM official Book Summarization compatibility reproduction",
+  "official_baseline_commit": "26216044f5d4caccc0303d86667b491ead11d878",
+  "books": [
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/ChineseBook/三体.txt",
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/ChineseBook/三国演义.txt",
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/ChineseBook/哈利.波特中文版1.txt",
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/ChineseBook/平凡的世界.txt",
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/ChineseBook/西游记.txt",
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/EnglishBook/Gone_With_The_Wind.txt",
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/EnglishBook/Jane_Eyre.txt",
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/EnglishBook/The_Great_Gatsby.txt",
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/EnglishBook/The_Life_and_Adventures_of_Robinson_Crusoe.txt",
+    "/root/autodl-tmp/paper_repro/SCM4LLMs/data/book/EnglishBook/The_Old_Man_and_the_Sea.txt"
+  ],
+  "modes": [
+    "scm",
+    "no_scm"
+  ],
+  "model": "/root/autodl-tmp/models/Qwen2.5-7B-Instruct",
+  "tokenizer_budget_model": "text-davinci-003",
+  "started_at_unix": 1792657832.0627878
+}

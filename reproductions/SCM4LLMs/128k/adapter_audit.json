@@ -1,0 +1,35 @@
+{
+  "dataset": "PersonaMem-128K",
+  "questions": 2727,
+  "context_records": 110,
+  "referenced_contexts": 60,
+  "unused_contexts": 50,
+  "negative_end_index_count": 17,
+  "future_leakage_count": 0,
+  "lossless_reconstruction_failures": 0,
+  "visible_message_min": 570,
+  "visible_message_max": 845,
+  "scm_memory_unit_instances": 1167917,
+  "unique_scm_memory_units": 12841,
+  "deduplication_ratio": 0.9890052118429649,
+  "memory_units_per_question": {
+    "min": 311,
+    "max": 501,
+    "avg": 428.2790612394573
+  },
+  "unit_size_distribution": {
+    "1": 267787,
+    "2": 900130
+  },
+  "role_counts_in_visible_prefixes": {
+    "assistant": 907345,
+    "system": 53430,
+    "user": 1107272
+  },
+  "mapping_rule": "Only adjacent user->assistant messages form one SCM unit; all other messages become standalone units. The visible history is exactly full_context[:end_index]. Unique units are stored once and referenced by ordered SHA256 hashes.",
+  "source_questions": "/root/autodl-tmp/paper_repro/shared_data/questions_128k.csv",
+  "source_contexts": "/root/autodl-tmp/paper_repro/shared_data/shared_contexts_128k.jsonl",
+  "unique_units_output": "/root/autodl-tmp/paper_repro/adapters/scm_personamem_128k_dedup/unique_scm_memory_units.jsonl",
+  "question_hashes_output": "/root/autodl-tmp/paper_repro/adapters/scm_personamem_128k_dedup/question_scm_unit_hashes.jsonl",
+  "question_metadata_output": "/root/autodl-tmp/paper_repro/adapters/scm_personamem_128k_dedup/question_metadata.jsonl"
+}

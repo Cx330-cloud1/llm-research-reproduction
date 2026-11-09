@@ -1,0 +1,29 @@
+{
+  "questions": 2674,
+  "unique_units": 23502,
+  "topk": 6,
+  "max_history_tokens": 2500,
+  "max_previous_turn_tokens": 500,
+  "controller_needed": 7,
+  "controller_not_needed": 2667,
+  "safe_if_all_selected_turns_summary": 7,
+  "official_nontermination_risk": 0,
+  "previous_turn_raw": 2674,
+  "previous_turn_summary": 0,
+  "raw_budget_stats": {
+    "min": 151,
+    "median": 935,
+    "p95": 1977,
+    "p99": 2257,
+    "max": 3501
+  },
+  "all_summary_budget_stats": {
+    "min": 151,
+    "median": 571,
+    "p95": 895,
+    "p99": 1011,
+    "max": 1250
+  },
+  "similarity": "cosine",
+  "retrieval_candidates": "all memory units except last"
+}
