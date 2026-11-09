@@ -1,0 +1,51 @@
+{
+  "num_questions": 589,
+  "parameters": {
+    "num_seednodes": 15,
+    "mem_threshold": 30,
+    "n_components": 2,
+    "damping": 0.1,
+    "temp": 0.2
+  },
+  "session_count_distribution": {
+    "4": 105,
+    "5": 279,
+    "6": 177,
+    "7": 28
+  },
+  "zero_edge_questions": 384,
+  "edge_count_distribution": {
+    "0": 384,
+    "22": 1,
+    "23": 1,
+    "24": 13,
+    "25": 2,
+    "26": 6,
+    "27": 4,
+    "28": 39,
+    "29": 17,
+    "30": 23,
+    "31": 5,
+    "32": 28,
+    "33": 3,
+    "34": 13,
+    "35": 3,
+    "36": 3,
+    "37": 1,
+    "40": 2,
+    "42": 1,
+    "45": 11,
+    "49": 1,
+    "58": 12,
+    "66": 9,
+    "67": 1,
+    "68": 2,
+    "69": 2,
+    "70": 1,
+    "73": 1
+  },
+  "notes": [
+    "Graph construction preserves official range(5*4, len(node_ids)) behavior.",
+    "PersonaMem has no answer_session_ids; no retrieval Recall/NDCG was fabricated."
+  ]
+}

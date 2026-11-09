@@ -1,0 +1,11 @@
+{
+  "num_questions": 589,
+  "num_contexts": 37,
+  "future_leakage_count": 0,
+  "bad_end_index_count": 0,
+  "empty_session_count": 0,
+  "session_count_min": 4,
+  "session_count_max": 7,
+  "visible_message_min": 96,
+  "visible_message_max": 237
+}

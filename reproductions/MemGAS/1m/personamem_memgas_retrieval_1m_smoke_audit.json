@@ -1,0 +1,21 @@
+{
+  "num_questions": 3,
+  "parameters": {
+    "num_seednodes": 15,
+    "mem_threshold": 30,
+    "n_components": 2,
+    "damping": 0.1,
+    "temp": 0.2
+  },
+  "session_count_distribution": {
+    "60": 3
+  },
+  "zero_edge_questions": 0,
+  "edge_count_distribution": {
+    "2368": 3
+  },
+  "notes": [
+    "Graph construction preserves official range(5*4, len(node_ids)) behavior.",
+    "PersonaMem has no answer_session_ids; no retrieval Recall/NDCG was fabricated."
+  ]
+}

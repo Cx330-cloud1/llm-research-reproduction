@@ -1,0 +1,773 @@
+#!/usr/bin/env python3
+import argparse
+import json
+from pathlib import Path
+
+import torch
+from tqdm import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+DATA_PATH = Path("data/process_data/longmemeval_s.json")
+MODEL_PATH = Path("/root/autodl-tmp/models/Qwen2.5-7B-Instruct")
+DEFAULT_OUTPUT_ROOT = Path("multi_granularity_logs")
+
+MODEL_CONTEXT = 32768
+MAX_NEW_TOKENS = 500
+
+# Exact MemGAS LongMemEval prompts.
+SUMMARY_INSTRUCTION = (
+    "Below is an user-AI assistant dialogue memory. "
+    "Please summarize the following dialogue as concisely as possible "
+    "in a short paragraph, extracting the main themes and key information.\n"
+)
+
+KEYWORD_INSTRUCTION = (
+    "Below is an user-AI assistant dialogue memory. "
+    "Please extract the most relevant keywords, separated by semicolon.\n"
+)
+
+
+def parse_args():
+    p = argparse.ArgumentParser()
+
+    p.add_argument(
+        "--level",
+        choices=[
+            "summary_level",
+            "keyword_level",
+            "both",
+        ],
+        default="both",
+    )
+
+    p.add_argument(
+        "--output-root",
+        default=str(DEFAULT_OUTPUT_ROOT),
+    )
+
+    p.add_argument(
+        "--max-items",
+        type=int,
+        default=0,
+    )
+
+    p.add_argument(
+        "--expected-unique",
+        type=int,
+        default=19545,
+    )
+
+    return p.parse_args()
+
+
+def instruction_for(level):
+    if level == "summary_level":
+        return SUMMARY_INSTRUCTION
+
+    if level == "keyword_level":
+        return KEYWORD_INSTRUCTION
+
+    raise ValueError(level)
+
+
+def build_prompt(entry, level):
+    # Mirrors official summarize_session():
+    # f"{instru_prompt}\n\n{entry}\n\nYour answer:"
+    return (
+        f"{instruction_for(level)}"
+        f"\n\n{entry}\n\nYour answer:"
+    )
+
+
+def choose_batch_size(n_tokens):
+    if n_tokens <= 4096:
+        return 4
+
+    if n_tokens <= 8192:
+        return 2
+
+    return 1
+
+
+def load_unique_sessions():
+    data = json.load(
+        DATA_PATH.open(
+            encoding="utf-8"
+        )
+    )
+
+    sid2entry = {}
+
+    for sample in data:
+        for sid, sess in zip(
+            sample["sessions_ids"],
+            sample["sessions"],
+        ):
+            # Exact official representation.
+            entry = "\n\n".join(sess)
+
+            old = sid2entry.get(sid)
+
+            if old is not None and old != entry:
+                raise RuntimeError(
+                    f"session_id content conflict: {sid}"
+                )
+
+            sid2entry[sid] = entry
+
+    return sid2entry
+
+
+def load_existing(path):
+    existing = {}
+
+    if not path.exists():
+        return existing
+
+    with path.open(
+        encoding="utf-8"
+    ) as f:
+        for lineno, line in enumerate(f, 1):
+            line = line.strip()
+
+            if not line:
+                continue
+
+            obj = json.loads(line)
+
+            if (
+                not isinstance(obj, dict)
+                or len(obj) != 1
+            ):
+                raise RuntimeError(
+                    f"bad jsonl record at "
+                    f"{path}:{lineno}"
+                )
+
+            sid, value = next(
+                iter(obj.items())
+            )
+
+            existing[sid] = value
+
+    return existing
+
+
+def render_chat(
+    tokenizer,
+    entry,
+    level,
+):
+    prompt = build_prompt(
+        entry,
+        level,
+    )
+
+    return tokenizer.apply_chat_template(
+        [
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        tokenize=False,
+        add_generation_prompt=True,
+    )
+
+
+def prompt_token_length(
+    tokenizer,
+    entry,
+    level,
+):
+    rendered = render_chat(
+        tokenizer,
+        entry,
+        level,
+    )
+
+    ids = tokenizer(
+        rendered,
+        add_special_tokens=False,
+        truncation=False,
+    )["input_ids"]
+
+    return len(ids)
+
+
+@torch.inference_mode()
+def generate_batch(
+    model,
+    tokenizer,
+    items,
+    level,
+):
+    rendered = [
+        render_chat(
+            tokenizer,
+            entry,
+            level,
+        )
+        for _, entry, _ in items
+    ]
+
+    inputs = tokenizer(
+        rendered,
+        add_special_tokens=False,
+        padding=True,
+        truncation=False,
+        return_tensors="pt",
+    )
+
+    input_len = (
+        inputs["input_ids"]
+        .shape[1]
+    )
+
+    if (
+        input_len
+        + MAX_NEW_TOKENS
+        > MODEL_CONTEXT
+    ):
+        raise RuntimeError(
+            f"context overflow: "
+            f"input={input_len}, "
+            f"new={MAX_NEW_TOKENS}, "
+            f"limit={MODEL_CONTEXT}"
+        )
+
+    inputs = {
+        k: v.to(model.device)
+        for k, v in inputs.items()
+    }
+
+    try:
+        outputs = model.generate(
+            **inputs,
+            max_new_tokens=MAX_NEW_TOKENS,
+            do_sample=False,
+            use_cache=True,
+            pad_token_id=(
+                tokenizer.pad_token_id
+            ),
+            eos_token_id=(
+                tokenizer.eos_token_id
+            ),
+        )
+
+    except torch.cuda.OutOfMemoryError:
+        del inputs
+        torch.cuda.empty_cache()
+
+        if len(items) == 1:
+            raise
+
+        # Automatic fallback:
+        # 4 -> 2 -> 1
+        mid = len(items) // 2
+
+        left = generate_batch(
+            model,
+            tokenizer,
+            items[:mid],
+            level,
+        )
+
+        right = generate_batch(
+            model,
+            tokenizer,
+            items[mid:],
+            level,
+        )
+
+        return left + right
+
+    continuations = outputs[
+        :,
+        input_len:
+    ]
+
+    texts = tokenizer.batch_decode(
+        continuations,
+        skip_special_tokens=True,
+    )
+
+    texts = [
+        x.strip()
+        for x in texts
+    ]
+
+    for (
+        sid,
+        _,
+        _,
+    ), text in zip(
+        items,
+        texts,
+    ):
+        if not text:
+            raise RuntimeError(
+                f"empty generation: "
+                f"{sid} {level}"
+            )
+
+    return texts
+
+
+def prepare_pending(
+    tokenizer,
+    sid2entry,
+    existing,
+    level,
+    max_items,
+):
+    pending = [
+        (sid, entry)
+        for sid, entry
+        in sid2entry.items()
+        if sid not in existing
+    ]
+
+    if max_items > 0:
+        pending = pending[
+            :max_items
+        ]
+
+    buckets = {
+        4: [],
+        2: [],
+        1: [],
+    }
+
+    print(
+        f"[{level}] "
+        f"measuring prompt lengths: "
+        f"{len(pending)}",
+        flush=True,
+    )
+
+    for sid, entry in tqdm(
+        pending,
+        desc=f"{level}:tokenize",
+    ):
+        n_tokens = (
+            prompt_token_length(
+                tokenizer,
+                entry,
+                level,
+            )
+        )
+
+        if (
+            n_tokens
+            + MAX_NEW_TOKENS
+            > MODEL_CONTEXT
+        ):
+            raise RuntimeError(
+                f"{sid}: "
+                f"prompt={n_tokens} + "
+                f"{MAX_NEW_TOKENS} "
+                f"> {MODEL_CONTEXT}"
+            )
+
+        bs = choose_batch_size(
+            n_tokens
+        )
+
+        buckets[bs].append(
+            (
+                sid,
+                entry,
+                n_tokens,
+            )
+        )
+
+    # Reduce padding waste.
+    for bs in buckets:
+        buckets[bs].sort(
+            key=lambda x: x[2]
+        )
+
+    print(
+        f"[{level}] buckets: "
+        f"bs4={len(buckets[4])}, "
+        f"bs2={len(buckets[2])}, "
+        f"bs1={len(buckets[1])}",
+        flush=True,
+    )
+
+    return buckets
+
+
+def run_level(
+    model,
+    tokenizer,
+    sid2entry,
+    level,
+    output_root,
+    max_items,
+):
+    output_root.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    # construct_emb.py expects exactly this.
+    out_path = (
+        output_root
+        / f"longmemeval-{level}.jsonl"
+    )
+
+    existing = load_existing(
+        out_path
+    )
+
+    unknown = (
+        set(existing)
+        - set(sid2entry)
+    )
+
+    if unknown:
+        raise RuntimeError(
+            f"{out_path} contains "
+            f"{len(unknown)} "
+            f"unknown session ids"
+        )
+
+    print(
+        f"[{level}] "
+        f"output={out_path}",
+        flush=True,
+    )
+
+    print(
+        f"[{level}] "
+        f"existing={len(existing)} "
+        f"total_unique="
+        f"{len(sid2entry)}",
+        flush=True,
+    )
+
+    buckets = prepare_pending(
+        tokenizer,
+        sid2entry,
+        existing,
+        level,
+        max_items,
+    )
+
+    pending_count = sum(
+        len(v)
+        for v in buckets.values()
+    )
+
+    if pending_count == 0:
+        print(
+            f"[{level}] "
+            f"nothing to do",
+            flush=True,
+        )
+        return
+
+    # Append + flush after every generated
+    # sample gives safe resume after disconnect.
+    with out_path.open(
+        "a",
+        encoding="utf-8",
+        buffering=1,
+    ) as f:
+
+        bar = tqdm(
+            total=pending_count,
+            desc=(
+                f"{level}:generate"
+            ),
+        )
+
+        for bs in (4, 2, 1):
+            items = buckets[bs]
+
+            for start in range(
+                0,
+                len(items),
+                bs,
+            ):
+                batch = items[
+                    start:
+                    start + bs
+                ]
+
+                texts = generate_batch(
+                    model,
+                    tokenizer,
+                    batch,
+                    level,
+                )
+
+                for (
+                    sid,
+                    _,
+                    _,
+                ), text in zip(
+                    batch,
+                    texts,
+                ):
+                    # IMPORTANT:
+                    # bare session_id,
+                    # because construct_emb.py
+                    # indexes LongMemEval this way.
+                    f.write(
+                        json.dumps(
+                            {
+                                sid: text
+                            },
+                            ensure_ascii=False,
+                        )
+                        + "\n"
+                    )
+
+                    f.flush()
+
+                bar.update(
+                    len(batch)
+                )
+
+        bar.close()
+
+    final = load_existing(
+        out_path
+    )
+
+    if max_items > 0:
+        expected = (
+            len(existing)
+            + pending_count
+        )
+    else:
+        expected = len(
+            sid2entry
+        )
+
+    if len(final) != expected:
+        raise RuntimeError(
+            f"{level}: "
+            f"expected "
+            f"{expected} outputs, "
+            f"got {len(final)}"
+        )
+
+    print(
+        f"[{level}] "
+        f"completed_unique="
+        f"{len(final)}",
+        flush=True,
+    )
+
+
+def main():
+    args = parse_args()
+
+    if not DATA_PATH.exists():
+        raise FileNotFoundError(
+            DATA_PATH
+        )
+
+    if not MODEL_PATH.exists():
+        raise FileNotFoundError(
+            MODEL_PATH
+        )
+
+    if not torch.cuda.is_available():
+        raise RuntimeError(
+            "CUDA is not available"
+        )
+
+    sid2entry = (
+        load_unique_sessions()
+    )
+
+    print(
+        "dataset:",
+        DATA_PATH,
+        flush=True,
+    )
+
+    print(
+        "unique_sessions:",
+        len(sid2entry),
+        flush=True,
+    )
+
+    if (
+        args.expected_unique > 0
+        and len(sid2entry)
+        != args.expected_unique
+    ):
+        raise RuntimeError(
+            f"expected "
+            f"{args.expected_unique} "
+            f"unique sessions, "
+            f"got {len(sid2entry)}"
+        )
+
+    print(
+        "gpu:",
+        torch.cuda.get_device_name(
+            0
+        ),
+        flush=True,
+    )
+
+    print(
+        "model:",
+        MODEL_PATH,
+        flush=True,
+    )
+
+    print(
+        "generation: "
+        "greedy, "
+        "max_new_tokens=500",
+        flush=True,
+    )
+
+    print(
+        "key_format: "
+        "bare LongMemEval "
+        "session_id",
+        flush=True,
+    )
+
+    tokenizer = (
+        AutoTokenizer
+        .from_pretrained(
+            MODEL_PATH,
+            local_files_only=True,
+        )
+    )
+
+    tokenizer.padding_side = (
+        "left"
+    )
+
+    if (
+        tokenizer.pad_token_id
+        is None
+    ):
+        tokenizer.pad_token = (
+            tokenizer.eos_token
+        )
+
+    model = (
+        AutoModelForCausalLM
+        .from_pretrained(
+            MODEL_PATH,
+            torch_dtype=(
+                torch.bfloat16
+            ),
+            local_files_only=True,
+        )
+        .to("cuda")
+    )
+
+    model.eval()
+
+    if args.level == "both":
+        levels = [
+            "summary_level",
+            "keyword_level",
+        ]
+    else:
+        levels = [
+            args.level
+        ]
+
+    output_root = Path(
+        args.output_root
+    )
+
+    for level in levels:
+        run_level(
+            model,
+            tokenizer,
+            sid2entry,
+            level,
+            output_root,
+            args.max_items,
+        )
+
+        torch.cuda.empty_cache()
+
+    meta_path = (
+        output_root
+        / (
+            "longmemeval-"
+            "qwen7b-generation-"
+            "meta.json"
+        )
+    )
+
+    meta = {
+        "dataset": str(
+            DATA_PATH
+        ),
+        "unique_sessions": (
+            len(sid2entry)
+        ),
+        "model": str(
+            MODEL_PATH
+        ),
+        "generator": (
+            "Qwen2.5-7B-Instruct"
+        ),
+        "compatibility_mode": True,
+        "historical_generator": (
+            "gpt-4o-mini"
+        ),
+        "max_new_tokens": (
+            MAX_NEW_TOKENS
+        ),
+        "do_sample": False,
+        "model_context": (
+            MODEL_CONTEXT
+        ),
+        "batch_policy": {
+            "<=4096": 4,
+            "4097-8192": 2,
+            ">8192": 1,
+        },
+        "key_format": (
+            "bare session_id"
+        ),
+        "levels": levels,
+        "summary_instruction": (
+            SUMMARY_INSTRUCTION
+        ),
+        "keyword_instruction": (
+            KEYWORD_INSTRUCTION
+        ),
+    }
+
+    meta_path.write_text(
+        json.dumps(
+            meta,
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    print(
+        "metadata:",
+        meta_path,
+        flush=True,
+    )
+
+    print(
+        "LONGMEMEVAL_QWEN7B_GENERATION_OK",
+        flush=True,
+    )
+
+
+if __name__ == "__main__":
+    main()

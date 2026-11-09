@@ -1,0 +1,65 @@
+{
+  "benchmark": "PersonaMem-128K",
+  "method": "MemGAS",
+  "retrieval_parameters": {
+    "topk_sessions": 3,
+    "num_seednodes": 15,
+    "mem_threshold": 30,
+    "n_components": 2,
+    "damping": 0.1,
+    "temp": 0.2
+  },
+  "generator": {
+    "model": "Qwen2.5-7B-Instruct",
+    "filter_max_new_tokens": 4000,
+    "answer_max_new_tokens": 512,
+    "do_sample": false
+  },
+  "compatibility_notes": [
+    "gpt-4o-mini replaced with Qwen2.5-7B-Instruct",
+    "PersonaMem has no real session/question date; unavailable date fields omitted",
+    "official generation_multigran.py duplicates the same filtered response topk times in stage 2; this benchmark includes the filtered response once",
+    "PersonaMem-v1 MCQ answer interface and extraction logic used for final ACC"
+  ],
+  "total": 2727,
+  "correct": 917,
+  "overall_accuracy": 0.33626696002933626,
+  "unparsed": 125,
+  "per_question_type": {
+    "acknowledge_latest_user_preferences": {
+      "total": 866,
+      "correct": 178,
+      "accuracy": 0.20554272517321015
+    },
+    "generalize_to_new_scenarios": {
+      "total": 213,
+      "correct": 49,
+      "accuracy": 0.2300469483568075
+    },
+    "provide_preference_aligned_recommendations": {
+      "total": 349,
+      "correct": 130,
+      "accuracy": 0.37249283667621774
+    },
+    "recall_user_shared_facts": {
+      "total": 171,
+      "correct": 63,
+      "accuracy": 0.3684210526315789
+    },
+    "revisit_reasons_behind_preference_updates": {
+      "total": 269,
+      "correct": 172,
+      "accuracy": 0.6394052044609665
+    },
+    "suggest_new_ideas": {
+      "total": 518,
+      "correct": 129,
+      "accuracy": 0.24903474903474904
+    },
+    "track_full_preference_evolution": {
+      "total": 341,
+      "correct": 196,
+      "accuracy": 0.5747800586510264
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "dataset": "PersonaMem-128K",
+  "questions": 2727,
+  "context_records": 110,
+  "referenced_contexts": 60,
+  "unused_contexts": 50,
+  "unique_sessions": 1249,
+  "session_instances": 53430,
+  "reuse_ratio": 0.9766236196893131,
+  "session_count_min": 16,
+  "session_count_max": 20,
+  "visible_message_min": 570,
+  "visible_message_max": 845,
+  "bad_end_index_count": 0,
+  "future_leakage_count": 0,
+  "hash_scheme": "sha256(canonical-json-session)",
+  "note": "Low-disk adapter: does not materialize duplicated full per-question session JSON."
+}
