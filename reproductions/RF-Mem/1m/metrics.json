@@ -1,0 +1,9 @@
+{
+  "dataset": "1m",
+  "source_result_filename": "results_RFMem_Qwen3_8B_1M.json",
+  "total": 2674,
+  "correct": 968,
+  "incorrect": 1706,
+  "accuracy": 0.362004,
+  "verification": "Computed from local result JSON"
+}

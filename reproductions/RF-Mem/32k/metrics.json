@@ -1,0 +1,9 @@
+{
+  "dataset": "32k",
+  "source_result_filename": "results_RFMem_Qwen3_8B_full.json",
+  "total": 589,
+  "correct": 314,
+  "incorrect": 275,
+  "accuracy": 0.533107,
+  "verification": "32K dataset mapping pending"
+}
