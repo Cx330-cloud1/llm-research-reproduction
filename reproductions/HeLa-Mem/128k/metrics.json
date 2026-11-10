@@ -1,0 +1,9 @@
+{
+  "dataset": "128k",
+  "total": 2727,
+  "correct": 1267,
+  "incorrect": 1460,
+  "accuracy": 0.464613,
+  "source_result_filename": "results_hela_personamem_128k.json",
+  "note": "128K result file; run configuration not independently verified"
+}

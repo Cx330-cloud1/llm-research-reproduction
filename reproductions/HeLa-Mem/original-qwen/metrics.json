@@ -1,0 +1,52 @@
+{
+  "experiment": "longmemeval_mem_qwen_full_v2",
+  "total": 500,
+  "correct": 364,
+  "incorrect": 136,
+  "accuracy": 0.728,
+  "params": {
+    "top_k": 15,
+    "semantic_top_k": 5,
+    "use_consolidation": false,
+    "max_flipped": "3",
+    "learning_rate": "0.02",
+    "activation_alpha": "0.1",
+    "spreading_threshold": "0.4",
+    "decay_rate": "0.995",
+    "keyword_weight": "0.7",
+    "tau": "1e7"
+  },
+  "per_type": {
+    "single-session-user": {
+      "correct": 65,
+      "total": 70,
+      "accuracy": 92.85714285714286
+    },
+    "multi-session": {
+      "correct": 71,
+      "total": 133,
+      "accuracy": 53.383458646616546
+    },
+    "knowledge-update": {
+      "correct": 53,
+      "total": 78,
+      "accuracy": 67.94871794871796
+    },
+    "single-session-preference": {
+      "correct": 20,
+      "total": 30,
+      "accuracy": 66.66666666666666
+    },
+    "temporal-reasoning": {
+      "correct": 105,
+      "total": 133,
+      "accuracy": 78.94736842105263
+    },
+    "single-session-assistant": {
+      "correct": 50,
+      "total": 56,
+      "accuracy": 89.28571428571429
+    }
+  },
+  "note": "full_v2 recorded result; later repairs not merged"
+}

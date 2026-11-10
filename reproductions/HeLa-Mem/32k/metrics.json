@@ -1,0 +1,9 @@
+{
+  "dataset": "32k",
+  "total": 589,
+  "correct": 279,
+  "incorrect": 310,
+  "accuracy": 0.473684,
+  "source_result_filename": "results_hela_personamem_cached.json",
+  "note": "32K mapping requires verification"
+}
