@@ -1,16 +1,13 @@
 {
-  "dataset": "1M",
+  "dataset": "1m",
   "total": 2674,
-  "correct": null,
-  "incorrect": null,
-  "accuracy": null,
-  "dataset_rows": 2674,
-  "result_rows": 2674,
+  "correct": 1007,
+  "incorrect": 1667,
+  "accuracy": 0.376589,
   "scored_rows": 2674,
   "missing": 0,
   "duplicate_question_ids": 0,
   "error_rows": 0,
   "source_result_filename": "results_hela_personamem_1M_prefix.json",
-  "verification_status": "completeness_only",
-  "note": "Local audit reports complete records; correctness and accuracy are not independently verified."
+  "note": "Aggregated from 2674 boolean scores; independent scoring validation pending"
 }
