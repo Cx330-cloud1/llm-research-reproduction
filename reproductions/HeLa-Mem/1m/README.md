@@ -1,290 +1,364 @@
-# HeLa-Mem: PersonaMem 1M Reproduction
+# HeLa-Mem：PersonaMem 1M 复现
 
-This repository contains an experimental reproduction and adaptation of **HeLa-Mem** for the **PersonaMem 1M** benchmark.
+本目录提供 HeLa-Mem 在 PersonaMem 1M 数据设置下的适配与复现实现，包括核心记忆模块、本地大语言模型推理接口、PersonaMem 数据适配、共享前缀缓存构建、缓存评测以及相关测试。
 
-The project extends the original HeLa-Mem implementation with local LLM inference, structured PersonaMem data processing, shared-prefix memory construction, persistent inference caching, and cached evaluation.
-
-The primary goal is to investigate the scalability and efficiency of long-term conversational memory construction and retrieval under large-scale personalized dialogue evaluation.
-
-> **Reproduction status:** The 1M evaluation pipeline has produced 2,674 result records, and the dataset/result completeness audit passed. Exact algorithmic equivalence with the original independent execution pipeline and independently verified accuracy remain under investigation.
+本项目基于 HeLa-Mem 原始实现进行扩展，主要目的是研究和验证 HeLa-Mem 在长对话用户记忆场景下的记忆构建、知识提取、记忆检索与个性化问答能力。
 
 ---
 
-## 1. Project Overview
+## 1. 项目简介
 
-HeLa-Mem is a Hebbian-learning-based memory architecture designed for long-term conversational memory.
+### 1.1 研究目标
 
-This reproduction adapts the architecture to PersonaMem 1M and introduces several engineering components:
+PersonaMem 关注长对话场景中的用户个性化记忆与问答问题。
 
-- Local Qwen-based LLM inference.
-- Structured PersonaMem data adaptation.
-- Episodic memory construction with batch processing.
-- Incremental long-term knowledge extraction.
-- Shared-prefix memory encoding.
-- Independent cutoff snapshots.
-- Persistent inference caching.
-- Cached evaluation and equivalence testing.
+本复现工作将 HeLa-Mem 的记忆机制适配到 PersonaMem 数据格式，主要涉及：
 
-The implementation aims to reduce redundant memory construction across questions that share conversation histories.
+- **情景记忆（Episodic Memory）**：利用 Hebbian Memory Graph 存储和关联历史对话信息。
+- **知识记忆（Knowledge Memory）**：从对话中提取和维护长期知识。
+- **记忆检索（Memory Retrieval）**：通过记忆图和相关检索机制获取与当前问题有关的信息。
+- **用户画像（User Profile）**：支持用户长期信息的组织和检索。
+- **本地大模型推理**：通过 vLLM 加载本地 Qwen 模型，完成知识处理和问答生成。
 
-## 2. Project Structure
+### 1.2 本次复现的主要工作
+
+相较于直接运行原始 HeLa-Mem 实现，本项目针对 PersonaMem 的数据结构和实验需求进行了以下适配：
+
+1. 实现 PersonaMem 对话数据的结构化转换。
+2. 接入本地 Qwen 模型，减少对远程 LLM API 的依赖。
+3. 实现 Qwen 推理结果的 SQLite 持久化缓存。
+4. 实现共享对话前缀（Shared Prefix）的统一编码。
+5. 为不同问题截止位置（Cutoff）构建独立记忆快照。
+6. 实现缓存状态加载与后续问答评测。
+7. 提供缓存等价性测试及结构化语义适配测试。
+
+---
+
+## 2. 项目目录
 
 ```text
 1m/
-│
 ├── README.md
 ├── STATUS.md
+├── .gitignore
 ├── requirements.txt
 │
 ├── hela_mem/
+│   ├── __init__.py
 │   ├── hebbian_memory.py
 │   ├── hebbian_knowledge_memory.py
 │   ├── hebbian_retriever.py
-│   ├── local_qwen_bridge.py
-│   ├── personamem_structured_adapter.py
 │   ├── profile_utils.py
 │   ├── utils.py
+│   ├── local_qwen_bridge.py
+│   ├── personamem_structured_adapter.py
 │   ├── encode_locomo.py
 │   ├── encode_longmemeval.py
 │   ├── eval_locomo.py
-│   ├── eval_longmemeval.py
-│   └── __init__.py
+│   └── eval_longmemeval.py
 │
 ├── scripts/
+│   ├── eval_personamem_local.py
+│   ├── eval_personamem_local_full.py
 │   ├── build_personamem_prefix_cache.py
 │   └── eval_personamem_cached.py
 │
-├── tests/
-│   ├── test_personamem_cache_equivalence.py
-│   ├── test_structured_semantic_adapter.py
-│   └── test_structured_semantic_render.py
-│
-├── docs/
-│
-└── results/
+└── tests/
+    ├── test_personamem_cache_equivalence.py
+    ├── test_structured_semantic_adapter.py
+    └── test_structured_semantic_render.py
 ```
 
-## 3. Main Components
+### 核心文件说明
 
-### 3.1 Hebbian Episodic Memory
+| 文件 | 功能 |
+|---|---|
+| `hebbian_memory.py` | Hebbian 情景记忆图及记忆更新机制 |
+| `hebbian_knowledge_memory.py` | 长期知识记忆管理 |
+| `hebbian_retriever.py` | 记忆检索与关联激活 |
+| `profile_utils.py` | 用户画像相关处理 |
+| `utils.py` | Embedding、关键词及通用工具 |
+| `local_qwen_bridge.py` | 本地 Qwen 推理与持久化缓存 |
+| `personamem_structured_adapter.py` | PersonaMem 结构化语义适配 |
+| `build_personamem_prefix_cache.py` | 共享前缀记忆缓存构建 |
+| `eval_personamem_cached.py` | 基于缓存的 PersonaMem 问答评测 |
 
-`hebbian_memory.py`
+---
 
-Implements the episodic memory graph and Hebbian memory operations.
+## 3. 环境配置
 
-The PersonaMem adaptation includes batch memory insertion to reduce repeated embedding and keyword-processing overhead.
+### 3.1 基础环境
 
-### 3.2 Long-term Knowledge Memory
+原项目使用 Python 3.10 及以上版本。
 
-`hebbian_knowledge_memory.py`
+主要依赖：
 
-Implements long-term knowledge storage and incremental knowledge extraction.
+- Python
+- PyTorch
+- NumPy
+- Sentence Transformers
+- vLLM
+- Pandas
+- OpenAI Python SDK
+- tqdm
 
-The adapted pipeline processes conversation turns in fixed-size batches and maintains an incomplete buffer for the remaining turns.
-
-### 3.3 Local LLM Inference
-
-`local_qwen_bridge.py`
-
-Provides a local inference interface for Qwen-based models.
-
-It supports:
-
-- Batched completion.
-- Chat generation.
-- Persistent response caching.
-- Reuse of previously generated outputs.
-
-Model weights are not included in this repository.
-
-### 3.4 Structured PersonaMem Adapter
-
-`personamem_structured_adapter.py`
-
-Provides structured data adaptation for PersonaMem conversations and evaluation inputs.
-
-### 3.5 Shared-prefix Memory Construction
-
-`scripts/build_personamem_prefix_cache.py`
-
-Implements shared-prefix memory construction.
-
-Questions associated with the same shared conversation context are processed in ascending cutoff order.
-
-Instead of independently rebuilding the entire memory state for every question, the pipeline advances a canonical memory state and creates snapshots at required cutoffs.
-
-### 3.6 Independent Cutoff Snapshots
-
-Each cutoff snapshot uses independent copies of the episodic graph and long-term knowledge memory.
-
-The remaining incomplete knowledge buffer is processed on the snapshot copy rather than directly modifying the canonical knowledge state.
-
-This design is intended to preserve cutoff-specific memory states.
-
-### 3.7 Cached Evaluation
-
-`scripts/eval_personamem_cached.py`
-
-Loads previously constructed memory snapshots and performs evaluation without rebuilding the complete conversation memory for every question.
-
-## 4. Experimental Configuration
-
-The experimental implementation uses a local Qwen inference backend.
-
-The execution environment is expected to provide:
-
-- Python.
-- PyTorch.
-- Sentence Transformers.
-- NumPy.
-- OpenAI-compatible interfaces where required.
-- Locally available model weights.
-- PersonaMem dataset files.
-
-The exact model paths, inference settings, and runtime configurations must be configured in the execution environment.
-
-Neither model weights nor original benchmark data are distributed in this repository.
-
-## 5. Installation
-
-Clone the repository and enter this directory.
-
-```bash
-cd reproductions/HeLa-Mem/1m
-```
-
-Install the listed dependencies:
+安装依赖：
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Additional dependencies may be required depending on the execution environment and the selected inference backend.
+注意：vLLM 与 PyTorch、CUDA 版本存在兼容性要求。建议根据实际 GPU、CUDA 和 PyTorch 环境选择兼容版本，不建议直接无条件安装最新版依赖。
 
-## 6. Reproduction Pipeline
+### 3.2 模型配置
 
-The experimental pipeline consists of the following stages.
+本次实验使用的模型：
 
-### Stage 1: Data Preparation
+| 模型 | 用途 |
+|---|---|
+| Qwen3-8B-Base | 本地大语言模型推理 |
+| all-MiniLM-L6-v2 | 文本 Embedding |
 
-Prepare PersonaMem conversation data and transform it into the structured format required by the memory system.
+模型权重不包含在本仓库中，需要自行下载或准备本地模型。
 
-### Stage 2: Local Model Initialization
-
-Configure the local inference backend and embedding model.
-
-Ensure that the model paths and runtime dependencies are available.
-
-### Stage 3: Shared-prefix Cache Construction
-
-Run the prefix cache builder:
+通过环境变量配置模型路径：
 
 ```bash
-python scripts/build_personamem_prefix_cache.py
+export HEBBIAN_QWEN_MODEL=/path/to/Qwen3-8B-Base
+
+export HEBBIAN_EMBED_MODEL=/path/to/all-MiniLM-L6-v2
+
+export HEBBIAN_LOCAL_QWEN=1
 ```
 
-The actual dataset paths and runtime arguments should be configured according to the execution environment and script configuration.
+其中：
 
-### Stage 4: Cached Evaluation
-
-Run the cached evaluation pipeline:
-
-```bash
-python scripts/eval_personamem_cached.py
-```
-
-Evaluation configuration, dataset paths, and cache locations must be set before execution.
-
-### Stage 5: Validation
-
-Run the available tests:
-
-```bash
-python -m pytest tests/ -v
-```
-
-Passing individual tests does not by itself establish complete equivalence with the original implementation.
-
-## 7. PersonaMem 1M Data Integrity Audit
-
-The local experiment audit reported the following results:
-
-| Metric | Result |
-|---|---:|
-| Expected questions | 2,674 |
-| Dataset rows | 2,674 |
-| Result rows | 2,674 |
-| Missing questions | 0 |
-| Duplicate question IDs | 0 |
-| Error rows | 0 |
-| Scored rows | 2,674 |
-
-**Data completeness audit: PASSED.**
-
-These results establish the structural completeness of the generated evaluation records.
-
-They do not independently establish:
-
-- Model accuracy.
-- Correctness of every prediction.
-- Equivalence with the original HeLa-Mem implementation.
-- Reproducibility across different hardware and software environments.
-
-No accuracy claim is made without an independently verified aggregate evaluation report.
-
-## 8. Validation and Reproducibility
-
-The following validation aspects are being investigated:
-
-1. Episodic memory batch processing versus original sequential processing.
-2. Shared-prefix encoding versus independent per-question encoding.
-3. Cutoff snapshot isolation.
-4. Incremental knowledge extraction consistency.
-5. Retrieval behavior and memory-state consistency.
-6. Evaluation result reproducibility.
-
-The test suite contains preliminary checks for cache equivalence and structured semantic adaptation.
-
-Full algorithmic equivalence remains subject to further validation.
-
-## 9. Data and Model Availability
-
-The following materials are intentionally excluded:
-
-- Original PersonaMem conversation data.
-- Per-question evaluation records.
-- Reference answers and generated responses.
-- Model weights.
-- Local inference databases.
-- Private memory snapshots.
-- Temporary cache files.
-
-This repository focuses on the implementation and reproduction methodology rather than redistributing benchmark data or model checkpoints.
-
-## 10. Limitations
-
-This is an experimental adaptation rather than a claim of a fully verified reproduction.
-
-Important limitations include:
-
-- The original and optimized memory pipelines require further equivalence testing.
-- The dependency configuration may need additional environment-specific packages.
-- Local inference results may vary with model versions and generation settings.
-- Complete reproducibility requires the original benchmark data and model checkpoints.
-- Data completeness should not be interpreted as prediction accuracy.
-
-## 11. Acknowledgements
-
-This project builds upon the original HeLa-Mem implementation and adapts it for PersonaMem-based long-term conversational memory experiments.
-
-Please refer to the original project and its license for upstream implementation details and attribution.
+- `HEBBIAN_QWEN_MODEL`：Qwen 模型目录。
+- `HEBBIAN_EMBED_MODEL`：Embedding 模型目录。
+- `HEBBIAN_LOCAL_QWEN`：启用本地 Qwen 推理模式。
 
 ---
 
-**Project:** HeLa-Mem PersonaMem 1M Reproduction
+## 4. PersonaMem 数据准备
 
-**Repository:** `llm-research-reproduction`
+本项目不包含 PersonaMem 原始数据集，需要根据数据集的获取和使用要求自行准备。
 
-**Directory:** `reproductions/HeLa-Mem/1m/`
+预期的数据文件：
 
-**Status:** Experimental reproduction; validation ongoing.
+```text
+personamem_data/
+└── data/
+    ├── questions_1M.csv
+    └── shared_contexts_1M.jsonl
+```
+
+其中：
+
+- `questions_1M.csv`：PersonaMem 问题及相关元数据。
+- `shared_contexts_1M.jsonl`：共享对话上下文。
+
+默认数据目录为：
+
+```text
+1m/data/personamem_data/
+```
+
+也可以通过环境变量指定实际数据目录：
+
+```bash
+export PERSONAMEM_DATA_ROOT=/path/to/personamem_data
+```
+
+如果需要分别指定文件：
+
+```bash
+export PERSONAMEM_QUESTION_PATH=/path/to/questions_1M.csv
+
+export PERSONAMEM_CONTEXT_PATH=/path/to/shared_contexts_1M.jsonl
+```
+
+---
+
+## 5. 实验参数
+
+PersonaMem 不提供真实的对话时间戳，因此本复现中关闭时间衰减，避免人为引入时间排序信号。
+
+主要实验参数包括：
+
+| 参数 | 默认值 |
+|---|---:|
+| Learning Rate | 0.02 |
+| Decay Rate | 0.995 |
+| Activation Alpha | 0.1 |
+| Spreading Threshold | 0.4 |
+| Max Flipped | 3 |
+| Keyword Weight | 0.7 |
+| Knowledge Buffer Size | 10 |
+| Time Decay | False |
+
+对应环境变量：
+
+```bash
+export HEBBIAN_USE_TIME_DECAY=false
+
+export HEBBIAN_USE_KEYWORD_MATCH=true
+
+export HEBBIAN_LEARNING_RATE=0.02
+
+export HEBBIAN_DECAY_RATE=0.995
+
+export HEBBIAN_ACTIVATION_ALPHA=0.1
+
+export HEBBIAN_SPREADING_THRESHOLD=0.4
+
+export HEBBIAN_MAX_FLIPPED=3
+
+export HEBBIAN_KEYWORD_WEIGHT=0.7
+
+export HEBBIAN_KNOWLEDGE_BUFFER_SIZE=10
+```
+
+本地 Qwen 推理采用 vLLM，代码中的主要配置包括：
+
+- Tensor Parallel Size：1
+- GPU Memory Utilization：0.9
+- Maximum Model Length：16384
+- Prefix Caching：Enabled
+- Guided Decoding Backend：Guidance
+
+---
+
+## 6. 共享前缀缓存机制
+
+为了避免对具有相同历史对话前缀的多个问题重复执行完整记忆编码，本项目实现了 Shared-Prefix Cache。
+
+### 6.1 基本思想
+
+对于共享同一段历史对话的多个问题：
+
+1. 按照对话截止位置对问题进行排序。
+2. 找到最长的共享对话上下文。
+3. 验证各个截止位置是否构成真实的前缀关系。
+4. 按照对话顺序推进统一的记忆状态。
+5. 对完整知识批次执行知识提取。
+6. 对尚未完成的知识缓冲区，在独立快照副本上进行处理。
+7. 为每个截止位置保存独立的记忆状态。
+
+### 6.2 缓存隔离
+
+每个截止位置保存独立的记忆快照，包括：
+
+- `memory_hebbian.json`
+- `memory_long_term.json`
+- `memory_long_term_kb_graph.json`
+- `metadata.json`
+- `READY`
+
+采用临时目录构建、JSON 文件验证和原子发布机制，避免不完整的缓存被评测程序读取。
+
+### 6.3 缓存构建
+
+运行前请先查看脚本参数：
+
+```bash
+python scripts/build_personamem_prefix_cache.py --help
+```
+
+根据实际数据路径、缓存目录及参数配置执行缓存构建。
+
+### 6.4 缓存评测
+
+查看评测参数：
+
+```bash
+python scripts/eval_personamem_cached.py --help
+```
+
+评测阶段通过对应问题的截止位置加载记忆快照，执行记忆检索和答案生成。
+
+具体参数以脚本实际支持的命令行选项为准。
+
+---
+
+## 7. 测试
+
+本项目提供三组测试。
+
+### 7.1 结构化语义适配测试
+
+```bash
+python -m pytest tests/test_structured_semantic_adapter.py -v
+```
+
+### 7.2 结构化语义渲染测试
+
+```bash
+python -m pytest tests/test_structured_semantic_render.py -v
+```
+
+### 7.3 缓存等价性测试
+
+```bash
+python -m pytest tests/test_personamem_cache_equivalence.py -v
+```
+
+缓存等价性测试涉及记忆状态、对话处理及模型调用，需要提前准备相应的数据和模型环境。
+
+---
+
+## 8. 实验进度与结果审计
+
+本项目已在 AutoDL GPU 环境完成 PersonaMem 1M 的一次完整问答评测运行。
+
+根据本地实验审计记录：
+
+| 审计项目 | 数量 |
+|---|---:|
+| 预期问题数 | 2674 |
+| 数据集问题数 | 2674 |
+| 评测结果数 | 2674 |
+| 缺失问题数 | 0 |
+| 重复问题数 | 0 |
+| 错误记录数 | 0 |
+| 已评分记录数 | 2674 |
+
+上述数据说明本次运行完成了全部预期问题的结果生成，没有发现缺失、重复或错误记录。
+
+**注意：** 完成率不等同于模型准确率。本 README 不报告未经独立核实的准确率或与论文结果的性能对比。完整结果文件和原始数据未随本次源码提交。
+
+---
+
+## 9. 复现注意事项
+
+1. 本仓库不包含 Qwen 模型权重。
+2. 本仓库不包含 Embedding 模型权重。
+3. 本仓库不包含 PersonaMem 原始数据集。
+4. 模型和数据路径需要根据实际运行环境配置。
+5. 不同 CUDA、PyTorch 和 vLLM 版本可能影响运行兼容性。
+6. 本地 Qwen 推理需要具备足够的 GPU 显存。
+7. 建议先运行结构化语义测试，再执行完整缓存构建和问答评测。
+8. 复现实验时应保留模型版本、依赖版本、实验参数及评测日志，以便进行结果核验。
+
+---
+
+## 10. 参考与致谢
+
+本项目基于 HeLa-Mem 的公开实现进行 PersonaMem 适配和实验复现。
+
+感谢原论文作者及开源项目贡献者提供的研究成果。
+
+本目录属于独立的实验复现与适配实现，不代表原论文作者发布的官方 PersonaMem 实验结果。
+
+---
+
+## 11. 后续工作
+
+后续计划包括：
+
+- 完善依赖版本锁定与环境配置文档。
+- 进一步核验缓存构建和评测的一致性。
+- 完成更多实验设置下的对照实验。
+- 开展记忆模块消融实验。
+- 分析不同检索策略对个性化问答表现的影响。
+- 对实验结果进行统计分析和误差归因。
+
